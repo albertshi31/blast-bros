@@ -546,6 +546,11 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
 .devpanel .slider select { grid-column: 1 / -1; }
 .devpanel select { font: inherit; font-weight: 700; font-size: 16px; padding: 10px 12px; border-radius: 8px; background: #0a1522; color: #e8f2ff; border: 2px solid #2a4a6a; min-width: 0; width: 100%; }
 .cbar.hp .track.shielded { box-shadow: 0 0 0 2px #6ecbff, 0 0 12px rgba(110,203,255,.7), inset 0 1px 3px rgba(0,0,0,.8); }
+/* unrefined ore in the wallet: tap to open the Refinery */
+.nav-cur .orepill { font: inherit; color: #e8e0ff; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+.nav-cur .orepill.has { color: #ffd98a; box-shadow: 0 0 0 1px rgba(255,190,80,.5), inset 0 1px 3px rgba(0,0,0,.8); }
+.nav-cur .orepill .ico { width: 16px; height: 20px; }
+.muted.small { font-size: 13px; margin: 6px auto 10px; max-width: 46ch; }
 
 </style>
 <div class="bb" id="bb"></div>
@@ -5592,7 +5597,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const lv = BB.levelFor(C, save.xp);
       const tab = (to, label, badge) => `<button class="nav-tab ${active === to ? 'on' : ''}" data-act="nav" data-to="${to}">${ICON[to]}<span>${label}</span>${badge ? '<em>!</em>' : ''}</button>`;
       return `<nav class="navbar">
-        <div class="nav-cur">${coin(save.coins)}${bux(save.bux)}</div>
+        <div class="nav-cur">${coin(save.coins)}${bux(save.bux)}<button class="cur orepill ${save.ore >= 1 ? 'has' : ''}" data-act="nav" data-to="refinery" title="Unrefined ore: smelt it in the Refinery">${ORE_SVG()}${fmt(Math.floor(save.ore))}</button></div>
         <div class="nav-tabs">${tab('title', 'Base')}${tab('campaign', 'Play')}${tab('endless', 'Endless')}${tab('store', 'Store')}${tab('refinery', 'Refinery', refineReady())}${tab('ops', 'Bro-Ops', opsReady())}${DEV ? tab('dev', 'Dev') : ''}</div>
         <div class="nav-lvl"><span>LEVEL</span><b>${String(lv.level).padStart(3, '0')}</b><div class="xpbar"><i style="width:${(lv.into / lv.need) * 100}%"></i></div></div>
         <button class="icon-btn" data-act="sound" aria-label="Sound settings">${spk(audio.muted)}</button>
@@ -6071,6 +6076,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         ${r.notes.map((n) => `<p class="note">${n}</p>`).join('')}
         <div class="refine">
           <div class="refine-math">${ORE_SVG()} ${fmt(r.ore)} ore × ${Math.round(r.mul * 100)}% = <b>${fmt(r.banked)} ore banked</b></div>
+          <p class="muted small">Your ore is saved in your stash (${fmt(Math.floor(save.ore))} total, shown at the top). Smelt it now for coins, or load it into the Refinery later for a better rate.</p>
           <div class="row"><button class="btn buy" data-act="smelt" ${save.ore >= 1 ? '' : 'disabled'}>Quick smelt all · ${coin(save.ore)}</button><button class="btn alt" data-act="nav" data-to="refinery">Refinery</button></div>
         </div>
         <div class="row">
@@ -6115,6 +6121,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       'sound-done'() { const b2 = G.soundBack || 'title'; show(b2 === 'pause' ? 'pause' : b2, b2 === 'brief' ? G.briefMission : undefined); },
       nav(el) {
         const to = el.dataset.to;
+        if (G.screen === 'results' && to !== 'refinery' && save.ore >= 1) toast(`${fmt(Math.floor(save.ore))} ore waiting in the Refinery`);
         if (to === 'endless') return startRun({ mode: 'endless' });
         if (to === 'store') G.back = el.dataset.back || '';
         show(to);
