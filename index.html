@@ -688,15 +688,15 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       hornets:  { name: 'Hornet Nest', cls: 'Heavy', lvl: 62, price: 197100, cur: 'coin', type: 'rocket', slow: 0.12, count: 4, spread: 1.1, home: 5,
         dmg: 34, splash: 20, radius: 55, rate: 1.9, speed: 480, range: 760, r: 4, color: '#ffd040', art: { style: 'launcher', body: '#4a4020', accent: '#ffd040', barrels: 4 },
         blurb: 'Four homing mini-missiles per trigger pull. They find their own way.' },
-      cluster:  { name: 'Cluster Bomber', cls: 'Heavy', lvl: 72, price: 280000, cur: 'coin', type: 'rocket', slow: 0.15, cluster: 6,
-        dmg: 110, splash: 60, radius: 110, rate: 1.1, speed: 520, range: 720, r: 7, color: '#ff8a30', art: { style: 'launcher', body: '#50402a', accent: '#ff8a30' },
-        blurb: 'The rocket explodes, then its six little rockets explode.' },
-      flare:    { name: 'Solar Flare', cls: 'Heavy', lvl: 84, price: 405000, cur: 'coin', type: 'rocket', slow: 0.1,
-        dmg: 260, splash: 160, radius: 190, rate: 0.9, speed: 330, range: 700, r: 12, color: '#ffe060', art: { style: 'cannon', body: '#5a3a10', accent: '#ffe060', glow: '#ffd040' },
-        blurb: 'Launches a tiny sun. Covers a third of the screen in bad news. Best coin gun there is.' },
-      doomsday: { name: 'Doomsday', cls: 'Heavy', lvl: 80, price: 2500, cur: 'bux', type: 'rocket', speedBonus: 0.1, cluster: 10,
-        dmg: 380, splash: 200, radius: 170, rate: 0.8, speed: 420, range: 720, r: 10, color: '#aaff60', art: { style: 'cannon', body: '#2a3a20', accent: '#aaff60', glow: '#aaff60' },
-        blurb: 'A pocket nuke that splits into ten more pocket nukes. +10% speed, somehow.' },
+      cluster:  { name: 'Cluster Bomber', cls: 'Heavy', lvl: 72, price: 280000, cur: 'coin', type: 'rocket', slow: 0.15, cluster: 8, carpet: true,
+        dmg: 70, splash: 30, radius: 90, rate: 1.2, speed: 520, range: 720, r: 7, color: '#ff8a30', art: { style: 'launcher', body: '#50402a', accent: '#ff8a30' },
+        blurb: 'Carpet bombing. The rocket pops open and sprays eight bomblets across a wide patch. Crowd control, not a sniper.' },
+      flare:    { name: 'Solar Flare', cls: 'Heavy', lvl: 84, price: 405000, cur: 'coin', type: 'rocket', slow: 0.1, sun: true,
+        dmg: 200, splash: 120, radius: 230, aura: 160, auraR: 75, field: { r: 150, dps: 60, t: 3 }, rate: 0.75, speed: 250, range: 760, r: 24, color: '#ffd040', art: { style: 'cannon', body: '#5a3a10', accent: '#ffe060', glow: '#ffd040' },
+        blurb: 'Fires an actual sun. It rolls straight through the horde, scorching everything it passes, then goes nova and leaves the ground on fire.' },
+      doomsday: { name: 'Doomsday', cls: 'Heavy', lvl: 70, price: 2500, cur: 'bux', type: 'rocket', speedBonus: 0.1, nuke: true, knock: 110,
+        dmg: 520, splash: 300, radius: 280, field: { r: 210, dps: 70, t: 4, rad: true }, rate: 0.42, speed: 380, range: 760, r: 11, color: '#aaff60', art: { style: 'cannon', body: '#2a3a20', accent: '#aaff60', glow: '#aaff60' },
+        blurb: 'A pocket nuke. Slow to reload, biggest blast in the game, hurls the horde outward and leaves a glowing radiation zone. +10% speed, somehow.' },
 
       // ---- Special ----
       thunder:  { name: 'Thunderbro', cls: 'Special', lvl: 40, price: 66700, cur: 'coin', type: 'chain',
@@ -725,13 +725,16 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       leviathan:{ name: 'Golden Leviathan', cls: 'Laser', lvl: 60, price: 2999, cur: 'bux', type: 'beam', speedBonus: 0.1,
         dps: 100, charge: 1.2, chargeMul: 2.6, range: 620, width: 20, rockets: 2, rocketEvery: 0.45, rocketDmg: 28, radius: 60,
         color: '#ffd23f', art: { style: 'custom' }, blurb: 'Solid gold. Charges a laser while spitting homing rockets. +10% speed.' },
+      sink:     { name: 'The Kitchen Sink', cls: 'Special', lvl: 90, price: 620000, cur: 'coin', type: 'sink',
+        dmg: 40, rate: 6.5, speed: 720, spread: 0.1, range: 660, r: 5, color: '#f0f0f0', art: { style: 'cannon', body: '#8a9098', accent: '#e8e8e8', glow: '#ff70d0' },
+        blurb: 'Everything but. Every shot is a random round from the whole armory: tracers, pellets, homing plasma, ricochet rings, shuriken, mini rockets, frost, fire.' },
       bear:     { name: 'Whatever Bear', cls: 'Special', lvl: 80, price: 4999, cur: 'bux', type: 'rainbow',
         dmg: 60, rate: 5, speed: 800, spread: 0.9, count: 11, range: 640, r: 5, color: '#ff7ad9', art: { style: 'custom' },
         blurb: 'The Ultimate Weapon. Eleven rainbow bullets, one of them homing. Emotional support not included. Neither is caring.' },
     },
     weaponOrder: ['blaster', 'scatter', 'mauler', 'mutts', 'buzz', 'twotimer', 'doubletap', 'mauler2', 'tommy', 'trident', 'warmongers', 'quad', 'fry', 'mauler3', 'disruptors',
       'randy', 'bunker', 'headcase', 'howitzers', 'brozooka', 'sweeper', 'penta', 'foreman', 'ricochet', 'thunder', 'oculus', 'grinder', 'slug', 'gauss', 'seekers', 'saw', 'cryo',
-      'twinrocket', 'dragon', 'septa', 'mulcher', 'maws', 'leviathan', 'hornets', 'swarm', 'shuriken', 'stalker', 'cluster', 'endless', 'doomsday', 'bear', 'flare'],
+      'twinrocket', 'dragon', 'septa', 'mulcher', 'maws', 'leviathan', 'hornets', 'swarm', 'shuriken', 'stalker', 'cluster', 'endless', 'doomsday', 'bear', 'flare', 'sink'],
 
     // Armor comes as sets of three pieces (head, torso, legs). Each piece carries its share of the
     // set's stats; wearing the whole set also unlocks its bonus (dodge, regen).
@@ -939,7 +942,8 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const d = C.weapons[id], u = C.upgrade, L = (lvl || 1) - 1;
     const s = Object.assign({ id }, d);
     const dm = (1 + (d.cur === 'bux' ? u.premiumDmgPerLvl : u.dmgPerLvl) * L) * (1 + BB.MASTERY[mastery || 0]), rm = 1 + u.ratePerLvl * L;
-    for (const k of ['dmg', 'splash', 'dps', 'orbDmg', 'rocketDmg', 'burn']) if (s[k] != null) s[k] *= dm;
+    for (const k of ['dmg', 'splash', 'dps', 'orbDmg', 'rocketDmg', 'burn', 'aura']) if (s[k] != null) s[k] *= dm;
+    if (s.field) s.field = Object.assign({}, s.field, { dps: s.field.dps * dm });
     if (s.rate) s.rate *= rm;
     if (s.orbEvery) s.orbEvery /= rm;
     if (s.rocketEvery) s.rocketEvery /= rm;
@@ -983,7 +987,8 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     switch (s.type) {
       case 'bullet': case 'rainbow': return s.dmg * s.count * s.rate * (s.burst || 1) * (1 + (s.pierce || 0) * 0.3 + (s.bounce || 0) * 0.2) + (s.blast ? s.dmg * 0.6 * s.rate : 0) + (s.burn || 0) * 1.5;
       case 'flame': return s.dmg * 2 * s.rate * 0.6 + (s.burn || 0) * 2;
-      case 'rocket': return (s.dmg + s.splash) * s.rate * (s.count || 1) * (1 + (s.cluster || 0) * 0.25);
+      case 'rocket': return (s.dmg + s.splash) * s.rate * (s.count || 1) * (1 + (s.cluster || 0) * 0.25) + (s.aura ? s.aura * 1.2 * s.rate * 2.5 : 0) + (s.field ? s.field.dps * s.field.t * s.rate * 0.6 : 0);
+      case 'sink': return s.dmg * s.rate * 1.35;
       case 'rail': return s.dmg * s.rate * 1.5;
       case 'saw': return s.dmg * s.rate * 4;
       case 'chain': return s.dmg * s.rate * 2.2;
@@ -1156,7 +1161,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const run = {
       C, mode: o.mode, planet: o.planet || 0, mission: o.mission || 0, rev: o.rev || 0, seed,
       rng: BB.rng(seed * 7919 + 13), t: 0, over: null, events: [], beams: [],
-      enemies: [], bullets: [], ebullets: [], puddles: [], pickups: [], mines: [],
+      enemies: [], bullets: [], zones: [], ebullets: [], puddles: [], pickups: [], mines: [],
       wave: 0, queue: [], spawnT: 0, phase: 'break', breakT: 1.6, wavePerfect: true, waveLog: [],
       ore: 0, kills: 0, rage: 0, revived: 0, hurtTotal: 0,
       items: Object.assign({ medkit: 0, grenade: 0 }, o.items || {}), used: { medkit: 0, grenade: 0 },
@@ -1304,6 +1309,15 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
   function addBullet(run, b, o) {
     run.bullets.push(Object.assign({ owner: b, pierce: 0, hit: null, kind: 'bullet', home: 0, age: 0 }, o));
   }
+  // Kitchen Sink rounds: [look, colour, count, spread, damage each, extras]
+  const SINK = [
+    { look: 'tracer', color: '#ff3a3a', n: 1, dm: 1.2 }, { look: 'bolt', color: '#6aff7a', n: 1, dm: 1.3, sz: 1.2 },
+    { look: 'pellet', color: '#ffa040', n: 5, spread: 0.5, dm: 0.35 }, { look: 'needle', color: '#7dff5a', n: 3, spread: 0.12, dm: 0.45, spd: 1.3 },
+    { look: 'slug', color: '#c070ff', n: 1, dm: 1.6, sz: 1.7, pierce: 1 }, { look: 'ring', color: '#50ffd0', n: 1, dm: 1, bounce: 2, sz: 1.3 },
+    { look: 'plasma', color: '#7fd0ff', n: 1, dm: 0.9, home: 4, spd: 0.8 }, { look: 'comet', color: '#ff6a20', n: 1, dm: 1.2, burn: 0.5, sz: 1.2 },
+    { look: 'star', color: '#e8eef4', n: 1, dm: 1, pierce: 3 }, { rocket: true, color: '#ffb040', dm: 1.4 },
+    { look: 'bolt', color: '#9fe8ff', n: 2, spread: 0.15, dm: 0.6, chill: 1.2 }, { look: 'bolt', color: '#ff5ad0', n: 3, spread: 0.3, dm: 0.5 },
+  ];
   function fire(run, b, w, dt) {
     const ax = Math.cos(b.aim), ay = Math.sin(b.aim);
     let mx = b.x + ax * (b.r + 10), my = b.y + ay * (b.r + 10);
@@ -1338,9 +1352,19 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const n = w.count || 1;
       for (let i = 0; i < n; i++) {
         const a = b.aim + (n > 1 ? (i / (n - 1) - 0.5) * (w.spread || 0.6) : 0);
-        addBullet(run, b, { x: mx, y: my, vx: Math.cos(a) * w.speed, vy: Math.sin(a) * w.speed, r: w.r, dmg: w.dmg, splash: w.splash, radius: w.radius, life: w.range / w.speed, kind: 'rocket', color: w.color, home: w.home || 0, cluster: w.cluster || 0 });
+        addBullet(run, b, { x: mx, y: my, vx: Math.cos(a) * w.speed, vy: Math.sin(a) * w.speed, r: w.r, dmg: w.dmg, splash: w.splash, radius: w.radius, life: w.range / w.speed, kind: w.sun ? 'sun' : 'rocket', color: w.color, home: w.home || 0, cluster: w.cluster || 0,
+          carpet: w.carpet, nuke: w.nuke, knock: w.knock || 0, aura: w.aura || 0, auraR: w.auraR || 0, field: w.field || null, hit: w.sun ? new Set() : null });
       }
       ev(run, { t: 'shot', w: w.id, x: mx, y: my, a: b.aim });
+    } else if (w.type === 'sink') { // The Kitchen Sink: every shot is a random round from the armory
+      const V = SINK[Math.floor(rng() * SINK.length)];
+      if (V.rocket) addBullet(run, b, { x: mx, y: my, vx: ax * w.speed * 0.7, vy: ay * w.speed * 0.7, r: 6, dmg: w.dmg * V.dm, splash: w.dmg * 0.5, radius: 70, life: w.range / (w.speed * 0.7), kind: 'rocket', color: V.color });
+      else for (let i = 0; i < V.n; i++) {
+        const a = b.aim + (V.n > 1 ? (i / (V.n - 1) - 0.5) * V.spread : (rng() - 0.5) * w.spread), sp = w.speed * (V.spd || 1);
+        addBullet(run, b, { x: mx, y: my, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: w.r * (V.sz || 1), dmg: w.dmg * V.dm, life: w.range / sp, kind: V.look, color: V.color, sz: V.sz || 1,
+          home: V.home || 0, pierce: V.pierce || 0, bounce: V.bounce || 0, burn: V.burn ? w.dmg * V.burn : 0, chill: V.chill || 0, blast: 0 });
+      }
+      ev(run, { t: 'shot', w: w.id, x: mx, y: my, a: b.aim, color: V.color });
     } else if (w.type === 'saw') {
       addBullet(run, b, { x: mx, y: my, vx: ax * w.speed, vy: ay * w.speed, r: w.r, dmg: w.dmg, life: (w.range / w.speed) * 2.2, out: w.range / w.speed, kind: 'saw', pierce: 999, hit: new Set(), hitT: 0, color: w.color });
       ev(run, { t: 'shot', w: w.id, x: mx, y: my, a: b.aim });
@@ -1510,6 +1534,92 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     if (b && !b.down && hyp(b.x - e.x, b.y - e.y) < hyp(p.x - e.x, p.y - e.y) * 0.7) return b;
     return p;
   }
+  // ---------- navigation ----------
+  // Ground enemies follow a flow field: the arena is a grid of NAV-px cells, cover/pits/barrels (grown by the
+  // walker's radius) are blocked, and a Dijkstra pass from the target's cell gives every open cell its path
+  // distance. A walker heads for the farthest cell down that slope it can reach in a straight, body-wide line.
+  const NAV = 25;
+  function navGrid(run, pad) {
+    const C = run.C, cols = Math.ceil(C.world.w / NAV), rows = Math.ceil(C.world.h / NAV);
+    const bk = run.barrels.filter((b) => b.hp > 0).length;
+    run.navGrids = run.navGrids || {};
+    let g = run.navGrids[pad];
+    if (g && g.bk === bk && g.nc === run.crates.length) return g;
+    const block = new Uint8Array(cols * rows);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const x = (c + 0.5) * NAV, y = (r + 0.5) * NAV;
+      let b = x < 40 + pad || y < 40 + pad || x > C.world.w - 40 - pad || y > C.world.h - 40 - pad || inCrate(run, x, y, pad, true);
+      if (!b) for (const br of run.barrels) if (br.hp > 0 && hyp(br.x - x, br.y - y) < br.r + pad) { b = true; break; }
+      block[r * cols + c] = b ? 1 : 0;
+    }
+    g = run.navGrids[pad] = { cols, rows, block, bk, nc: run.crates.length };
+    return g;
+  }
+  const NB = [[1, 0, 10], [-1, 0, 10], [0, 1, 10], [0, -1, 10], [1, 1, 14], [1, -1, 14], [-1, 1, 14], [-1, -1, 14]];
+  function flowTo(run, pad, tg) {
+    const g = navGrid(run, pad), { cols, rows, block } = g;
+    const tc = clamp(Math.floor(tg.x / NAV), 0, cols - 1), tr = clamp(Math.floor(tg.y / NAV), 0, rows - 1), key = pad + ':' + (tg === run.p ? 'p' : 'b');
+    run.flows = run.flows || {};
+    let f = run.flows[key];
+    if (f && f.cell === tr * cols + tc && run.t - f.t < 0.6 && f.bk === g.bk) return f;
+    const dist = f && f.dist.length === cols * rows ? f.dist : new Int32Array(cols * rows);
+    dist.fill(0x3fffffff);
+    // binary heap of cell indices keyed by dist
+    const heap = [], push = (i) => { heap.push(i); let k = heap.length - 1; while (k > 0) { const p = (k - 1) >> 1; if (dist[heap[p]] <= dist[heap[k]]) break; [heap[p], heap[k]] = [heap[k], heap[p]]; k = p; } };
+    const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let k = 0; for (;;) { const l = k * 2 + 1, r = l + 1; let m = k; if (l < heap.length && dist[heap[l]] < dist[heap[m]]) m = l; if (r < heap.length && dist[heap[r]] < dist[heap[m]]) m = r; if (m === k) break; [heap[m], heap[k]] = [heap[k], heap[m]]; k = m; } } return top; };
+    // seed: the target's cell, or the open cells around it if the target stands in a blocked (grown) cell
+    for (let rad = 0; rad < 4 && !heap.length; rad++) for (let dr = -rad; dr <= rad; dr++) for (let dc = -rad; dc <= rad; dc++) {
+      const c = tc + dc, r = tr + dr; if (c < 0 || r < 0 || c >= cols || r >= rows) continue;
+      const i = r * cols + c; if (!block[i] && dist[i] > rad * 10) { dist[i] = rad * 10; push(i); }
+    }
+    while (heap.length) {
+      const i = pop(), c = i % cols, r = (i - c) / cols, di = dist[i];
+      for (const [dc, dr, w] of NB) {
+        const c2 = c + dc, r2 = r + dr; if (c2 < 0 || r2 < 0 || c2 >= cols || r2 >= rows) continue;
+        const j = r2 * cols + c2; if (block[j]) continue;
+        if (dc && dr && (block[r * cols + c2] || block[r2 * cols + c])) continue; // no cutting corners
+        if (di + w < dist[j]) { dist[j] = di + w; push(j); }
+      }
+    }
+    return (run.flows[key] = { cell: tr * cols + tc, t: run.t, dist, bk: g.bk, cols, rows });
+  }
+  // Clear straight corridor as wide as the walker (centre ray plus both shoulders).
+  function wideClear(run, x, y, tx, ty, r) {
+    const dx = tx - x, dy = ty - y, L = hyp(dx, dy); if (L < 1) return true;
+    const ux = dx / L, uy = dy / L, sx = -uy * r * 0.85, sy = ux * r * 0.85;
+    return rayCrates(run, x, y, ux, uy, L, true) >= L && rayCrates(run, x + sx, y + sy, ux, uy, L, true) >= L && rayCrates(run, x - sx, y - sy, ux, uy, L, true) >= L;
+  }
+  const padFor = (r) => (r <= 15 ? 15 : r <= 20 ? 20 : r <= 26 ? 26 : 34);
+  function pathDir(run, e, tg) {
+    if (wideClear(run, e.x, e.y, tg.x, tg.y, e.r)) return null; // straight shot: no routing needed
+    const f = flowTo(run, padFor(e.r), tg), { cols, rows, dist } = f;
+    let c = clamp(Math.floor(e.x / NAV), 0, cols - 1), r = clamp(Math.floor(e.y / NAV), 0, rows - 1), i = r * cols + c;
+    if (dist[i] >= 0x3fffffff) { // standing in a grown-blocked cell (hugging a wall): start from the best open neighbour
+      let best = -1; for (let dr = -2; dr <= 2; dr++) for (let dc = -2; dc <= 2; dc++) { const c2 = c + dc, r2 = r + dr; if (c2 < 0 || r2 < 0 || c2 >= cols || r2 >= rows) continue; const j = r2 * cols + c2; if (dist[j] < 0x3fffffff && (best < 0 || dist[j] < dist[best])) best = j; }
+      if (best < 0) return null;
+      i = best; c = i % cols; r = (i - c) / cols;
+    }
+    // walk downhill a few cells; aim at the farthest one still in a clear straight line
+    let aim = i;
+    for (let step = 0; step < 10; step++) {
+      let nx = -1;
+      for (const [dc, dr] of NB) { const c2 = c + dc, r2 = r + dr; if (c2 < 0 || r2 < 0 || c2 >= cols || r2 >= rows) continue; const j = r2 * cols + c2; if (dist[j] < dist[nx < 0 ? i : nx]) nx = j; }
+      if (nx < 0) break;
+      i = nx; c = i % cols; r = (i - c) / cols;
+      if (step < 1 || wideClear(run, e.x, e.y, (c + 0.5) * NAV, (r + 0.5) * NAV, e.r * 0.9)) aim = i; else break;
+    }
+    const ac = aim % cols, ar = (aim - ac) / cols, ax = (ac + 0.5) * NAV - e.x, ay = (ar + 0.5) * NAV - e.y, L = hyp(ax, ay);
+    return L > 0.5 ? [ax / L, ay / L] : null;
+  }
+  // Keep a walker's actual motion off walls: if the way it's moving is blocked just ahead, swing to the nearest open heading.
+  function slideOffWalls(run, e) {
+    const sp = hyp(e.vx, e.vy); if (sp < 5) return;
+    const a0 = Math.atan2(e.vy, e.vx), look = e.r + 10;
+    const free = (a) => rayCrates(run, e.x, e.y, Math.cos(a), Math.sin(a), look, true) >= look;
+    if (free(a0)) return;
+    for (const t of [0.35, 0.7, 1.05, 1.4]) for (const s of [1, -1]) { const a = a0 + t * s; if (free(a)) { const k = Math.cos(t); e.vx = Math.cos(a) * sp * k; e.vy = Math.sin(a) * sp * k; return; } }
+  }
+  const SHOOTERS = new Set(['grunt', 'shotgunner', 'sniper', 'heavy', 'rocketeer', 'medic', 'hexer', 'tankhead', 'bomber', 'minelayer', 'shield', 'warden', 'blinker']);
   function steer(e, tx, ty, speed, dt, accel) {
     const k = Math.min(1, dt * (accel || 6));
     e.vx += (tx * speed - e.vx) * k; e.vy += (ty * speed - e.vy) * k;
@@ -1530,13 +1640,12 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const tg = targetFor(run, e), dx = tg.x - e.x, dy = tg.y - e.y, dist = hyp(dx, dy) || 1;
     e.face = Math.atan2(dy, dx);
     let ux = dx / dist, uy = dy / dist;
-    // Walkers on the wrong side of a river head for the nearest bridge first.
-    if (!e.flying && !e.under && d.speed > 0 && e.st !== 'charge' && e.st !== 'dash' && e.st !== 'jump') {
-      const wp = BB.riverWaypoint(run, e, tg);
-      if (wp) { const pd = hyp(wp.x - e.x, wp.y - e.y) || 1; ux = (wp.x - e.x) / pd; uy = (wp.y - e.y) / pd; }
-    }
-    // Feeler: if a crate blocks the way ahead, turn along it (each enemy keeps a preferred side so it doesn't dither).
-    if (d.speed > 0 && e.st !== 'charge') {
+    // Walkers route around cover, rivers and barrels with the flow field.
+    const walker = !BB.oldPathing && !e.flying && !e.under && d.speed > 0 && e.st !== 'charge' && e.st !== 'dash' && e.st !== 'jump';
+    if (walker) { const pdir = pathDir(run, e, tg); if (pdir) { ux = pdir[0]; uy = pdir[1]; e.routing = true; } else e.routing = false; }
+    // Fliers: feeler steering around tall cover (each keeps a preferred side so it doesn't dither).
+    if (BB.oldPathing && !e.flying && !e.under && d.speed > 0 && e.st !== 'charge' && e.st !== 'dash' && e.st !== 'jump') { const wp = BB.riverWaypoint(run, e, tg); if (wp) { const pd = hyp(wp.x - e.x, wp.y - e.y) || 1; ux = (wp.x - e.x) / pd; uy = (wp.y - e.y) / pd; } }
+    if (!walker && d.speed > 0 && e.st !== 'charge') {
       const look = Math.min(dist, 70 + e.r * 1.5);
       if (rayCrates(run, e.x, e.y, ux, uy, look, !e.flying) < look) {
         e.side = e.side || (Math.sin(e.seed * 7) > 0 ? 1 : -1);
@@ -1812,6 +1921,14 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         if (d.boss) stepBoss(run, e, dt, tg, dist, ux, uy);
         else steer(e, ux, uy, e.spd, dt);
     }
+    // Shooters that have had no line of fire for a moment stop holding position and walk the route toward the target until they do.
+    if (!BB.oldPathing && SHOOTERS.has(d.ai) && walker && e.st !== 'wind' && e.st !== 'aim') {
+      e.losCk = (e.losCk || 0) - dt;
+      if (e.losCk <= 0) { e.losCk = 0.25; e.noShot = BB.los(run, e.x, e.y, tg.x, tg.y) ? 0 : (e.noShot || 0) + 0.25; }
+      if (e.noShot > 0.75) e.seekT = 1.1; // commit for a moment so a flickering sight line doesn't make it dither
+      if (e.seekT > 0) { e.seekT -= dt; const k = Math.min(1, dt * 20); e.vx += (ux * e.spd - e.vx) * k; e.vy += (uy * e.spd - e.vy) * k; } // overrides "keep your distance" 
+    }
+    if (!BB.oldPathing && !e.flying && !e.under && e.st !== 'charge' && e.st !== 'dash' && e.st !== 'jump') slideOffWalls(run, e);
     e.x += e.vx * dt * slow; e.y += e.vy * dt * slow;
     if (!d.boss || e.st !== 'charge') pushOut(run, e); else { const W = C.world.w, H = C.world.h; e.x = clamp(e.x, 40 + e.r, W - 40 - e.r); e.y = clamp(e.y, 40 + e.r, H - 40 - e.r); }
     // Contact damage
@@ -1997,6 +2114,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         if (u.hit && u.hit.has(e)) continue;
         if (hyp(e.x - u.x, e.y - u.y) < e.r + u.r) {
           if (u.kind === 'rocket') { gone = true; break; }
+          if (u.kind === 'sun') continue; // the sun rolls straight through; its heat does the damage (below)
           if ((e.d.ai === 'shield' || e.d.ai === 'tankhead') && u.kind !== 'saw') { // shields and tank armour soak shots from the front
             let da = Math.abs(Math.atan2(u.y - e.y, u.x - e.x) - (e.d.ai === 'tankhead' ? e.hull : e.face)); while (da > TAU) da -= TAU; if (da > Math.PI) da = TAU - da;
             if (da < 1.0) { ev(run, { t: 'hit', x: u.x, y: u.y, color: '#dfe8f0', ping: true }); gone = true; break; }
@@ -2012,18 +2130,33 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           if (!u.hit) u.hit = new Set([e]);
         }
       }
+      if (u.kind === 'sun' && !gone) { // scorch everything inside the corona as it passes
+        for (const e of run.enemies) if (!e.dead && !e.warp && !e.under && hyp(e.x - u.x, e.y - u.y) < u.auraR + e.r) { hurtEnemy(run, e, u.aura * dt, u.owner); e.burnT = Math.max(e.burnT || 0, 1.2); e.burnDps = Math.max(e.burnDps || 0, u.aura * 0.15); }
+      }
       if (gone) {
         u.dead = true;
-        if (u.kind === 'rocket') {
-          explode(run, u.x, u.y, u.radius, u.dmg + u.splash, 0, u.owner);
-          for (let k = 0; k < (u.cluster || 0); k++) { // cluster bomblets scatter and pop
-            const a = (k / u.cluster) * TAU + run.rng(), sp = 180 + run.rng() * 120;
-            run.bullets.push({ owner: u.owner, kind: 'rocket', x: u.x, y: u.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3, dmg: u.dmg * 0.4, splash: 0, radius: u.radius * 0.55, life: 0.25 + run.rng() * 0.2, age: 0, pierce: 0, hit: null, home: 0, color: '#ffb040' });
+        if (u.kind === 'rocket' || u.kind === 'sun') {
+          explode(run, u.x, u.y, u.radius, u.dmg + u.splash, 0, u.owner, u.kind === 'sun' ? 'nova' : u.nuke ? 'nuke' : null);
+          const n = u.cluster || 0;
+          for (let k = 0; k < n; k++) { // cluster bomblets scatter and pop (carpet: wider, a little later, in a ring)
+            const a = (k / n) * TAU + run.rng() * (u.carpet ? 0.4 : 1), sp = u.carpet ? 260 + run.rng() * 200 : 180 + run.rng() * 120;
+            run.bullets.push({ owner: u.owner, kind: 'rocket', x: u.x, y: u.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3, dmg: u.dmg * (u.carpet ? 0.6 : 0.4), splash: 0, radius: u.radius * (u.carpet ? 0.7 : 0.55), life: (u.carpet ? 0.4 : 0.25) + run.rng() * 0.2, age: 0, pierce: 0, hit: null, home: 0, color: '#ffb040' });
           }
+          if (u.knock) for (const e of run.enemies) { // nuke shockwave shoves the horde outward
+            if (e.dead || e.under) continue;
+            const dx = e.x - u.x, dy = e.y - u.y, d = hyp(dx, dy) || 1;
+            if (d < u.radius * 1.3 + e.r) { const f = (1 - d / (u.radius * 1.3 + e.r)) * u.knock * (e.d.boss ? 0.15 : 1); e.x += (dx / d) * f; e.y += (dy / d) * f; pushOut(run, e); }
+          }
+          if (u.field) run.zones.push({ x: u.x, y: u.y, r: u.field.r, dps: u.field.dps, life: u.field.t, max: u.field.t, rad: !!u.field.rad, owner: u.owner });
         }
       }
     }
     run.bullets = run.bullets.filter((u) => !u.dead);
+    for (const z of run.zones) { // burning ground / radiation left by the big heavies
+      z.life -= dt;
+      for (const e of run.enemies) if (!e.dead && !e.warp && !e.under && hyp(e.x - z.x, e.y - z.y) < z.r + e.r * 0.5) hurtEnemy(run, e, z.dps * dt, z.owner);
+    }
+    run.zones = run.zones.filter((z) => z.life > 0);
     const boomE = (u) => { ev(run, { t: 'boom', x: u.x, y: u.y, r: u.radius }); for (const b of [run.p, run.b]) if (b && !b.down && b.alive && hyp(b.x - u.x, b.y - u.y) < u.radius + b.r) hurtBro(run, b, u.dmg, u.x, u.y); };
     for (const u of run.ebullets) {
       if (u.lob) { // arcing glob / boulder: flies over everything, lands on its target spot
@@ -2142,6 +2275,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const tA = aligned ? (se < 0 ? Rv.hi + 40 : Rv.lo - 40) : (se < 0 ? Rv.lo - 25 : Rv.hi + 25);
     return Rv.axis === 'x' ? { x: bc, y: tA } : { x: tA, y: bc };
   };
+  BB._spawnEnemy = spawnEnemy; // for test/stuck.cjs
   BB.rayMove = function (run, x, y, dx, dy, L) { return rayCrates(run, x, y, dx, dy, L, true); };
   // Clear line between two points (no crate in the way). Used by the test bots.
   BB.los = function (run, x1, y1, x2, y2) { const d = hyp(x2 - x1, y2 - y1) || 1; return rayCrates(run, x1, y1, (x2 - x1) / d, (y2 - y1) / d, d) >= d - 4; };
@@ -2160,6 +2294,28 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const R = C.refinery, perf = run.waveLog.filter(Boolean).length;
     return Math.min(R.cap, 1 + run.waveLog.length * R.perWave + perf * R.perPerfect);
   };
+
+  // ---------- weapon power curve ----------
+  // Designer numbers set each gun's feel (rate, spread, speed, shape); this scales its damage so that its power at
+  // max level lands on one curve by unlock level. Coin guns climb steadily; Bro Bucks guns start level with coin guns
+  // of their tier and have a ceiling ~2.4x higher (they go to LV 20). Role tweaks: splash/pierce types a bit lower.
+  BB.powerTarget = function (C, d) {
+    const T = 260 + 27 * d.lvl;
+    const role = d.type === 'rocket' || d.type === 'flame' || d.type === 'chain' ? 0.9 : d.type === 'beam' ? 0.95 : d.cls === 'Spread' ? 0.95 : 1;
+    const prem = d.cur === 'bux' ? (d.type === 'rainbow' ? 3.5 : 2.4) : 1;
+    return T * role * prem;
+  };
+  BB.normalizeWeapons = function (C) {
+    if (C._normalized) return; C._normalized = true;
+    for (const [id, d] of Object.entries(C.weapons)) {
+      const raw = BB.gunPower(C, id, BB.maxLvl(C, d)); if (!raw) continue;
+      const f = BB.powerTarget(C, d) / raw;
+      for (const k of ['dmg', 'splash', 'dps', 'orbDmg', 'rocketDmg', 'burn', 'aura']) if (d[k] != null) d[k] *= f;
+      if (d.field) d.field = Object.assign({}, d.field, { dps: d.field.dps * f });
+      d.norm = f;
+    }
+  };
+  if (BB.config) BB.normalizeWeapons(BB.config);
 
   if (typeof module !== 'undefined') module.exports = BB;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -2343,11 +2499,18 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       toxic:  { bpm: 94,  root: 39, prog: [0, 0, 3, 5, 0, 1, 0, -2], gtr: 'x.x.xxO.x.x.xxO.', drums: 'groove' },
       hive:   { bpm: 88,  root: 37, prog: [0, 1, 6, 1, 0, 1, 6, 5], gtr: 'O.....x.O...xx..', drums: 'tribal' },
       ship:   { bpm: 126, root: 40, prog: [0, 0, 1, -2, 0, 0, 3, 1], gtr: 'x.xxx.xxx.xxx.xO', drums: 'drive' },
+      highway: { bpm: 146, root: 41, prog: [0, 0, 5, 5, 3, 3, 7, 5], gtr: 'O.x.x.x.O.x.xxx.', gtrB: 'O...O...o...O.O.', drums: 'drive' },
+      scrap:  { bpm: 116, root: 38, prog: [0, 3, 0, 5, 0, 3, 8, 7], gtr: 'O..x..x.O..x.x..', drums: 'groove' },
       boss:   { bpm: 152, root: 40, prog: [0, 1, 0, -1, 0, 1, 3, 1], gtr: 'xxxxO.xxxxO.xxO.', gtrB: 'O.O.O.O.xxxxO...', drums: 'blast' },
       menu:   { bpm: 80,  root: 40, prog: [0, 0, 3, 5, 0, 0, 8, 7], gtr: 'O.......o.......', gtrB: 'O.......O...o...', drums: 'doom', soft: true },
+      menu2:  { bpm: 72,  root: 43, prog: [0, 5, 3, 7, 0, 5, 8, 7], gtr: 'O...........o...', gtrB: 'O.......o.......', drums: 'doom', soft: true },
     };
     // Chorus pattern when a song has none: open chords on the beats.
     const chorusOf = (p) => p.replace(/x/g, '.').replace(/^./, 'O').slice(0, 8) + 'O...o...';
+    // Ten battle tracks rotate so no single loop wears thin: a planet opens with its own song, then the playlist moves on
+    // every ~40 bars at a section boundary. Bosses cut in with their track and hand back to wherever the playlist was.
+    const PLAYLIST = ['dust', 'highway', 'jungle', 'magma', 'scrap', 'dead', 'frost', 'toxic', 'hive', 'ship'], MENUS = ['menu', 'menu2'];
+    let mode = 'menu', pl = 0, ml = 0, battleStart = null, songBars = 0, pending = null;
     let song = SONGS.dust, gtrIn = null;
     const midi = (n) => 440 * Math.pow(2, (n - 69) / 12);
     function guitarBus() {
@@ -2440,14 +2603,30 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     }
     function pump() {
       if (!musicOn || !ac) return;
-      while (nextBar < ac.currentTime + 0.7) { nextBar += scheduleBar(nextBar, bar++); }
+      while (nextBar < ac.currentTime + 0.7) {
+        // switch tracks only on a bar line, so the old song's queued notes never overlap the new one
+        if (pending) { song = pending; pending = null; bar = 0; songBars = 0; }
+        else if (bar > 0 && bar % 20 === 0 && ((mode === 'battle' && songBars >= 40) || (mode === 'menu' && songBars >= 32))) {
+          if (mode === 'battle') { pl = (pl + 1) % PLAYLIST.length; song = SONGS[PLAYLIST[pl]]; } else { ml = (ml + 1) % MENUS.length; song = SONGS[MENUS[ml]]; }
+          bar = 0; songBars = 0;
+        }
+        nextBar += scheduleBar(nextBar, bar++); songBars++;
+      }
     }
+    function cue(s) { if (s === song && !pending) return; if (musicOn && ac) pending = s; else { song = s; bar = 0; songBars = 0; } }
 
     return {
       play,
       unlock: ensure,
       get muted() { return muted; },
-      theme(id) { if (SONGS[id] && song !== SONGS[id]) { song = SONGS[id]; bar = 0; if (musicOn && ac) nextBar = Math.max(nextBar - 0.6, ac.currentTime + 0.05); } },
+      theme(id) {
+        if (id === 'boss') { mode = 'boss'; cue(SONGS.boss); return; }
+        if (id === 'menu') { if (mode !== 'menu') { mode = 'menu'; battleStart = null; cue(SONGS[MENUS[ml]]); } return; }
+        if (!SONGS[id]) return;
+        if (battleStart !== id) { battleStart = id; pl = Math.max(0, PLAYLIST.indexOf(id)); mode = 'battle'; cue(SONGS[PLAYLIST[pl]]); return; } // new planet: open with its song
+        if (mode !== 'battle') { mode = 'battle'; cue(SONGS[PLAYLIST[pl]]); } // back from a boss: pick up the playlist where it was
+      },
+      get track() { return mode === 'boss' ? 'boss' : mode === 'menu' ? MENUS[ml] : PLAYLIST[pl]; },
       setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : vol.master * 0.9; },
       volumes: vol,
       setVolume(k, v) {
@@ -4524,6 +4703,11 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           case 'boom':
             fireball(e.x, e.y, Math.min(e.r, 110)); smoke(e.x, e.y, 10, e.r * 0.9, '#3a3430', 30); sparks(e.x, e.y, 18, e.r * 4); chunks(e.x, e.y, 10, '#2a2420', e.r * 3);
             bakeScorch(e.x, e.y, e.r * 0.9);
+            if (e.tag === 'nova' || e.tag === 'nuke') { // tiny sun going nova / pocket nuke: rolling ring out to the true blast edge
+              add({ k: 'wave', x: e.x, y: e.y, vx: 0, vy: 0, life: 0.55, max: 0.55, r: e.r * 1.1 });
+              for (let k = 0; k < 22; k++) { const a = (k / 22) * TAU, s2 = e.r * 1.6; add({ k: 'smoke', x: e.x, y: e.y, vx: Math.cos(a) * s2, vy: Math.sin(a) * s2, life: 0.7 + Math.random() * 0.4, max: 1.1, size: 18 + Math.random() * 12, color: e.tag === 'nuke' ? '#6a8a40' : '#8a6040' }); }
+              if (e.tag === 'nuke') smoke(e.x, e.y, 10, 40, '#4a5a38', 60); // the mushroom column
+            }
             if (e.tag === 'nade') { // frag: a dust shockwave out to the real blast edge, plus a ring of kicked-up dirt
               add({ k: 'wave', x: e.x, y: e.y, vx: 0, vy: 0, life: 0.35, max: 0.35, r: e.r });
               for (let k = 0; k < 18; k++) { const a = (k / 18) * TAU, s = e.r * 2.2; add({ k: 'smoke', x: e.x + Math.cos(a) * e.r * 0.3, y: e.y + Math.sin(a) * e.r * 0.3, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.5 + Math.random() * 0.3, max: 0.8, size: 14 + Math.random() * 10, color: '#8a7050' }); }
@@ -4560,7 +4744,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           case 'shot': {
             if (e.w === 'fry') break;
             const big = e.w === 'scatter' || e.w === 'brozooka' || e.w === 'bear';
-            const gc = (C.weapons[e.w] && C.weapons[e.w].color) || '#ffe6a0';
+            const gc = e.color && e.color[0] === '#' ? e.color : (C.weapons[e.w] && C.weapons[e.w].color) || '#ffe6a0';
             add({ k: 'muzzle', x: e.x, y: e.y, a: e.a, life: 0.05, max: 0.05, size: big ? 20 : 12, color: e.w === 'bear' ? '#ffb0e0' : sh(gc, 0.55), gc });
             flashes.push({ x: e.x, y: e.y, r: big ? 150 : 110, life: 0.06, max: 0.06, color: gc });
             if (e.w === 'blaster' || e.w === 'buzz' || e.w === 'scatter') {
@@ -4793,12 +4977,15 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const k = focus === 'snap' ? 1 : Math.min(1, dt * 6);
       cam.x += (tx - cam.x) * k; cam.y += (ty - cam.y) * k;
       const cx = vw >= C.world.w ? C.world.w / 2 : clamp(cam.x, vw / 2, C.world.w - vw / 2);
-      const cy = vh >= C.world.h ? C.world.h / 2 : clamp(cam.y, vh / 2, C.world.h - vh / 2);
+      // Vertical framing uses the band between HUD panels, and the camera may scroll until the arena's edge meets a
+      // panel's edge, so the bro and whatever's coming are never hidden under the console.
+      const cY = (hudIns.t + H - hudIns.b) / 2, hs = (H - hudIns.t - hudIns.b) / 2 / scale;
+      const cy = hs * 2 >= C.world.h ? C.world.h / 2 : clamp(cam.y, hs, C.world.h - hs);
       cam.shake = Math.max(0, cam.shake - dt * 40);
       const sx = (Math.random() - 0.5) * cam.shake, sy = (Math.random() - 0.5) * cam.shake;
-      const ox = W / 2 - (cx + sx) * scale, oy = H / 2 - (cy + sy) * scale;
+      const ox = W / 2 - (cx + sx) * scale, oy = cY - (cy + sy) * scale;
       const worldT = () => ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * ox, dpr * oy);
-      const x0 = Math.max(0, cx - vw / 2 - 20), y0 = Math.max(0, cy - vh / 2 - 20), x1 = Math.min(C.world.w, cx + vw / 2 + 20), y1 = Math.min(C.world.h, cy + vh / 2 + 20);
+      const x0 = Math.max(0, cx - vw / 2 - 20), y0 = Math.max(0, cy - cY / scale - 20), x1 = Math.min(C.world.w, cx + vw / 2 + 20), y1 = Math.min(C.world.h, cy + (H - cY) / scale + 20);
       const inView = (x, y, m) => x > x0 - m && x < x1 + m && y > y0 - m && y < y1 + m;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -4860,6 +5047,16 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           ctx.strokeText('RAGE 2× DMG', kp.x, by - pr - 9); ctx.fillText('RAGE 2× DMG', kp.x, by - pr - 9);
           ctx.textBaseline = 'alphabetic';
         }
+      }
+      for (const z of run.zones || []) { // burning ground (Solar Flare) / radiation (Doomsday)
+        const f = Math.min(1, z.life / 0.6) * Math.min(1, (z.max - z.life) / 0.2 + 0.3), fl = 0.85 + Math.sin(t * 9 + z.x) * 0.15;
+        const zg = ctx.createRadialGradient(z.x, z.y, z.r * 0.1, z.x, z.y, z.r);
+        if (z.rad) { zg.addColorStop(0, `rgba(170,255,90,${0.28 * f})`); zg.addColorStop(0.7, `rgba(90,200,40,${0.16 * f * fl})`); zg.addColorStop(1, 'rgba(60,160,30,0)'); }
+        else { zg.addColorStop(0, `rgba(255,190,70,${0.32 * f * fl})`); zg.addColorStop(0.6, `rgba(230,90,20,${0.2 * f})`); zg.addColorStop(1, 'rgba(160,40,10,0)'); }
+        ctx.fillStyle = zg; ctx.beginPath(); ctx.ellipse(z.x, z.y, z.r, z.r * 0.85, 0, 0, TAU); ctx.fill();
+        if (Math.random() < 0.35 * f) { const a = Math.random() * TAU, d = Math.random() * z.r * 0.85;
+          if (z.rad) add({ k: 'smoke', x: z.x + Math.cos(a) * d, y: z.y + Math.sin(a) * d * 0.85, vx: 0, vy: -20, life: 0.8, max: 1, size: 10, color: '#7ad040' });
+          else add({ k: 'fire', x: z.x + Math.cos(a) * d, y: z.y + Math.sin(a) * d * 0.85, vx: 0, vy: -30, life: 0.4, max: 0.6, size: 9 + Math.random() * 6 }); }
       }
       for (const m of run.mines) { // anti-personnel mine, drawn big with a pulsing danger ring once armed
         const armed = m.arm <= 0, pulse = 0.5 + 0.5 * Math.sin(t * 6 + m.x);
@@ -4974,6 +5171,24 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         if (u.kind === 'flame') {
           const f = u.life / (u.life + u.age);
           ctx.drawImage(tinted(PUFF, f > 0.6 ? '#ffe08a' : f > 0.3 ? '#ff8a28' : '#c83c10'), u.x - u.r * 1.3, u.y - u.r * 1.3, u.r * 2.6, u.r * 2.6);
+        } else if (u.kind === 'sun') { // a small star: white-hot core, boiling corona, licking flares
+          const R2 = u.r * 1.25, spin = u.age * 1.6;
+          glow(u.x, u.y, u.auraR * 1.6, '#ff8a20', 0.45);
+          glow(u.x, u.y, R2 * 2.4, '#ffc040', 0.7);
+          ctx.save(); ctx.translate(u.x, u.y);
+          for (let k = 0; k < 10; k++) { // flares
+            const a = spin + (k / 10) * TAU, L = R2 * (1.35 + 0.35 * Math.sin(u.age * 7 + k * 1.7));
+            ctx.fillStyle = k % 2 ? 'rgba(255,150,40,0.55)' : 'rgba(255,210,90,0.6)';
+            ctx.beginPath(); ctx.moveTo(Math.cos(a - 0.18) * R2 * 0.8, Math.sin(a - 0.18) * R2 * 0.8); ctx.quadraticCurveTo(Math.cos(a) * L * 1.1, Math.sin(a) * L * 1.1, Math.cos(a + 0.18) * R2 * 0.8, Math.sin(a + 0.18) * R2 * 0.8); ctx.fill();
+          }
+          const sg = ctx.createRadialGradient(-R2 * 0.25, -R2 * 0.25, 1, 0, 0, R2);
+          sg.addColorStop(0, '#fffbe8'); sg.addColorStop(0.35, '#ffe890'); sg.addColorStop(0.75, '#ffb030'); sg.addColorStop(1, '#ff7010');
+          ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, R2, 0, TAU); ctx.fill();
+          ctx.globalAlpha = 0.25; ctx.fillStyle = '#ff9a30'; // granulation
+          for (let k = 0; k < 6; k++) { const a = spin * 2 + k * 1.1, d = R2 * 0.5; ctx.beginPath(); ctx.arc(Math.cos(a) * d, Math.sin(a) * d, R2 * 0.18, 0, TAU); ctx.fill(); }
+          ctx.globalAlpha = 1; ctx.restore();
+          if (Math.random() < 0.5) add({ k: 'fire', x: u.x - u.vx * 0.05, y: u.y - u.vy * 0.05, vx: (Math.random() - 0.5) * 60, vy: (Math.random() - 0.5) * 60, life: 0.35, max: 0.6, size: 10 + Math.random() * 8 });
+          if (Math.random() < 0.3) bakeScorch(u.x, u.y, 14);
         } else if (u.kind === 'rocket') {
           glow(u.x, u.y, 18, '#ff9a30', 0.8); ctx.fillStyle = '#fff4d0'; ctx.beginPath(); ctx.arc(u.x, u.y, 2.5, 0, TAU); ctx.fill();
           if (Math.random() < 0.7) smoke(u.x, u.y, 1, 8, '#5a524a', 5);
@@ -5162,7 +5377,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       // enemy meets the edge, then slides inward along that line until it is clear of the HUD panels drawn over the canvas.
       const blocked = (x, y, pad) => hudRects.some((q) => x > q.l - pad && x < q.r + pad && y > q.t - pad && y < q.b + pad);
       const edgeSpot = (ex, ey, m, pad) => {
-        const ox = W / 2, oy = H / 2, dx = ex - ox, dy = ey - oy, L = Math.hypot(dx, dy) || 1;
+        const ox = W / 2, oy = cY, dx = ex - ox, dy = ey - oy, L = Math.hypot(dx, dy) || 1;
         let k = Infinity;
         if (dx > 0) k = Math.min(k, (W - m - ox) / dx); else if (dx < 0) k = Math.min(k, (m - ox) / dx);
         if (dy > 0) k = Math.min(k, (H - m - oy) / dy); else if (dy < 0) k = Math.min(k, (m + 10 - oy) / dy);
@@ -5173,9 +5388,9 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const pulse = 1 + Math.sin(t * 6) * 0.08;
       for (const e of run.enemies) {
         if (e.d.boss || e.warp > 0 || e.under || e.cloak) continue;
-        const ex = W / 2 + (e.x - cx) * scale, ey = H / 2 + (e.y - cy) * scale;
+        const ex = W / 2 + (e.x - cx) * scale, ey = cY + (e.y - cy) * scale;
         if (ex > -10 && ex < W + 10 && ey > -10 && ey < H + 10) continue;
-        const a = Math.atan2(ey - H / 2, ex - W / 2), [ax, ay] = edgeSpot(ex, ey, 22, 16);
+        const a = Math.atan2(ey - cY, ex - W / 2), [ax, ay] = edgeSpot(ex, ey, 22, 16);
         ctx.save(); ctx.translate(ax, ay); ctx.rotate(a); ctx.scale(pulse, pulse);
         ctx.beginPath(); ctx.moveTo(15, 0); ctx.lineTo(-8, -12); ctx.lineTo(-4, 0); ctx.lineTo(-8, 12); ctx.closePath();
         ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(20,4,4,0.8)'; ctx.lineJoin = 'round'; ctx.stroke();
@@ -5184,21 +5399,21 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       // Off-screen boss arrow: bigger, gold-rimmed
       for (const e of run.enemies) {
         if (!e.d.boss || e.warp > 0) continue;
-        const ex = W / 2 + (e.x - cx) * scale, ey = H / 2 + (e.y - cy) * scale;
+        const ex = W / 2 + (e.x - cx) * scale, ey = cY + (e.y - cy) * scale;
         if (ex > 0 && ex < W && ey > 0 && ey < H) continue;
-        const a = Math.atan2(ey - H / 2, ex - W / 2), [ax, ay] = edgeSpot(ex, ey, 30, 22);
+        const a = Math.atan2(ey - cY, ex - W / 2), [ax, ay] = edgeSpot(ex, ey, 30, 22);
         ctx.save(); ctx.translate(ax, ay); ctx.rotate(a); ctx.scale(pulse * 1.1, pulse * 1.1);
         ctx.beginPath(); ctx.moveTo(22, 0); ctx.lineTo(-12, -17); ctx.lineTo(-6, 0); ctx.lineTo(-12, 17); ctx.closePath();
         ctx.lineWidth = 6; ctx.strokeStyle = '#ffc830'; ctx.lineJoin = 'round'; ctx.stroke(); ctx.fillStyle = '#e8202a'; ctx.fill(); ctx.restore();
       }
-      return { cx, cy, scale };
+      return { cx, cy, cY, scale };
     }
     function cylDraw(x, y, w, h, col) { const gr = ctx.createLinearGradient(x, 0, x + w, 0); gr.addColorStop(0, sh(col, -0.5)); gr.addColorStop(0.45, sh(col, 0.3)); gr.addColorStop(1, sh(col, -0.6)); ctx.fillStyle = gr; ctx.fillRect(x, y, w, h); }
 
-    function toScreen(view, x, y) { return { x: W / 2 + (x - view.cx) * view.scale, y: H / 2 + (y - view.cy) * view.scale }; }
+    function toScreen(view, x, y) { return { x: W / 2 + (x - view.cx) * view.scale, y: (view.cY != null ? view.cY : H / 2) + (y - view.cy) * view.scale }; }
 
-    let hudRects = []; // screen boxes (canvas CSS px) covered by HUD panels; set by the game
-    function setHud(rects) { hudRects = rects || []; }
+    let hudRects = [], hudIns = { t: 0, b: 0 }; // screen boxes (canvas CSS px) covered by HUD panels, and the console's top/bottom insets; set by the game
+    function setHud(rects, ins) { hudRects = rects || []; hudIns = ins || { t: 0, b: 0 }; }
 
     resize();
     return { resize, draw, consume, clearFx, toScreen, preview, cam, setHud, get scale() { return scale; } };
@@ -5561,6 +5776,11 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       sponsor: (mode) => sponsorHTML(mode),
       dev: () => {
         const D = G.dev, P = C.planets, lvNow = level();
+        // sliders show what the dev save actually has; releasing one applies it straight away
+        D.level = lvNow;
+        D.lvl = Math.min(C.upgrade.premiumMax, Math.max(1, ...Object.values(save.guns)));
+        D.alvl = Math.min(C.armorUpgrade.premiumMax, Math.max(1, ...Object.values(save.pieces)));
+        D.rev = Math.max(...save.planets.map((p) => p.rev));
         const tier = BB.tierFor(C, D.planet, D.sector - 1, D.rev);
         const opt = (v, label, cur) => `<option value="${v}" ${String(v) === String(cur) ? 'selected' : ''}>${label}</option>`;
         const types = Object.keys(C.enemies), group = (f) => types.filter(f).map((k) => opt(k, C.enemies[k].name, D.type)).join('');
@@ -5569,17 +5789,14 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           <h2>Dev / playtest</h2>
           <p class="blurb">Everything here uses a separate dev save. Your real progress is untouched. Open with <b>?dev=1</b> or tap the title logo 7 times.</p>
           <h3>Bro</h3>
-          ${rng('level', 1, C.xp.cap, D.level, 'Level', 'LV ' + D.level)}
-          <div class="row"><button class="btn small" data-act="dev" data-do="level">Set level (now ${lvNow})</button>
-            <button class="btn small" data-act="dev" data-do="coins">+1,000,000 coins</button><button class="btn small" data-act="dev" data-do="bux">+10,000 B$</button><button class="btn small" data-act="dev" data-do="ore">+1,000 ore</button><button class="btn small" data-act="dev" data-do="items">Max items</button></div>
+          ${rng('level', 1, C.xp.cap, D.level, 'Level (applies when you let go)', 'LV ' + D.level)}
+          <div class="row"><button class="btn small" data-act="dev" data-do="coins">+1,000,000 coins</button><button class="btn small" data-act="dev" data-do="bux">+10,000 B$</button><button class="btn small" data-act="dev" data-do="ore">+1,000 ore</button><button class="btn small" data-act="dev" data-do="items">Max items</button></div>
           <h3>Gear</h3>
-          ${rng('lvl', 1, C.upgrade.premiumMax, D.lvl, 'Gun level', 'LV ' + D.lvl)}
-          ${rng('alvl', 1, C.armorUpgrade.premiumMax, D.alvl, 'Armor level', 'LV ' + D.alvl)}
-          <div class="row"><button class="btn small" data-act="dev" data-do="guns">Own every gun at that level</button><button class="btn small" data-act="dev" data-do="armor">Own every armor piece at that level</button></div>
+          ${rng('lvl', 1, C.upgrade.premiumMax, D.lvl, 'Every gun owned, at level', 'LV ' + D.lvl)}
+          ${rng('alvl', 1, C.armorUpgrade.premiumMax, D.alvl, 'Every armor piece owned, at level', 'LV ' + D.alvl)}
           <p class="notes">Coin gear caps at LV ${C.upgrade.maxLvl}; Bro Bucks gear goes to LV ${C.upgrade.premiumMax}. Equip in the Store as usual.</p>
           <h3>Campaign</h3>
-          ${rng('rev', 0, 9, D.rev, 'Revolution', roman(D.rev))}
-          <div class="row"><button class="btn small" data-act="dev" data-do="planets">Unlock every planet and sector at this revolution</button></div>
+          ${rng('rev', 0, 9, D.rev, 'Revolution (every planet and sector unlocked)', roman(D.rev))}
           <h3>Cheats (dev save only)</h3>
           <div class="row"><button class="btn small ${D.god ? 'on' : 'ghost'}" data-act="dev" data-do="god">God mode: ${D.god ? 'ON' : 'off'}</button><button class="btn small ${D.oneHit ? 'on' : 'ghost'}" data-act="dev" data-do="onehit">One-hit kills: ${D.oneHit ? 'ON' : 'off'}</button></div>
           <h3>Enemy lab</h3>
@@ -5628,7 +5845,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const MED = ['', 'Bronze', 'Silver', 'Gold'];
       const mastery = owned ? `<div class="mastery"><i class="medal m${rank}"></i><span>${rank ? MED[rank] + ' mastery' : 'Mastery'}</span>${rank < 3 ? `<div class="mbar"><i style="width:${Math.min(100, (kills / C.mastery[rank]) * 100)}%"></i></div><em>${fmt(kills)}/${fmt(C.mastery[rank])}</em>` : '<em>+15% damage</em>'}</div>` : '';
       const slot = save.loadout.guns.indexOf(id);
-      const notes = [d.count > 1 && d.type === 'bullet' ? `${d.count}-way` : '', d.burst ? `${d.burst}-round burst` : '', d.sweep ? 'sweeping fire' : '', d.pierce ? `pierces ${d.pierce}` : '', d.bounce ? `bounces ${d.bounce}×` : '', d.home ? 'homing' : '', d.spinup ? 'spins up' : '', d.chill ? 'slows aliens' : '', d.burn ? 'sets on fire' : '', d.blast ? 'explodes' : '', d.cluster ? `${d.cluster} bomblets` : '', d.type === 'rail' ? 'hits everything in a line' : '', d.type === 'saw' ? 'boomerang' : '', d.akimbo ? 'dual-wield' : '', d.slow ? `−${Math.round(d.slow * 100)}% speed` : '', d.speedBonus ? `+${Math.round(d.speedBonus * 100)}% speed` : '', d.type === 'rocket' ? 'splash damage' : '', d.type === 'chain' ? `jumps ${d.chains}×` : '', d.orbs ? `+${d.orbs} homing orbs` : '', d.rockets ? 'homing rockets' : '', d.type === 'rainbow' ? '11 shots, 1 homing' : '', d.type === 'flame' ? 'pierces' : ''].filter(Boolean);
+      const notes = [d.count > 1 && d.type === 'bullet' ? `${d.count}-way` : '', d.burst ? `${d.burst}-round burst` : '', d.sweep ? 'sweeping fire' : '', d.pierce ? `pierces ${d.pierce}` : '', d.bounce ? `bounces ${d.bounce}×` : '', d.home ? 'homing' : '', d.spinup ? 'spins up' : '', d.chill ? 'slows aliens' : '', d.burn ? 'sets on fire' : '', d.blast ? 'explodes' : '', d.cluster ? (d.carpet ? `carpet: ${d.cluster} bomblets` : `${d.cluster} bomblets`) : '', d.sun ? 'rolls through enemies, burns all it passes' : '', d.nuke ? 'huge blast, knockback' : '', d.field ? (d.field.rad ? 'leaves radiation' : 'leaves burning ground') : '', d.type === 'sink' ? 'random round every shot' : '', d.type === 'rail' ? 'hits everything in a line' : '', d.type === 'saw' ? 'boomerang' : '', d.akimbo ? 'dual-wield' : '', d.slow ? `−${Math.round(d.slow * 100)}% speed` : '', d.speedBonus ? `+${Math.round(d.speedBonus * 100)}% speed` : '', d.type === 'rocket' && !d.sun ? 'splash damage' : '', d.type === 'chain' ? `jumps ${d.chains}×` : '', d.orbs ? `+${d.orbs} homing orbs` : '', d.rockets ? 'homing rockets' : '', d.type === 'rainbow' ? '11 shots, 1 homing' : '', d.type === 'flame' ? 'pierces' : ''].filter(Boolean);
       let actions, upInfo = '';
       if (!owned) {
         const can = !locked && (d.cur === 'bux' ? save.bux >= d.price : save.coins >= d.price);
@@ -6000,6 +6217,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       const D = G.dev; D[k] = k === 'type' ? e.target.value : +e.target.value;
       const lab = $('devv-' + k);
       if (lab) lab.textContent = k === 'rev' ? roman(D.rev) : k === 'count' ? '×' + D.count : k === 'sector' ? 'S' + D.sector : 'LV ' + D[k];
+      if (e.type === 'change' && { level: 'level', lvl: 'guns', alvl: 'armor', rev: 'planets' }[k]) { ACTS.dev({ dataset: { do: { level: 'level', lvl: 'guns', alvl: 'armor', rev: 'planets' }[k] } }); return; }
       const tier = BB.tierFor(C, D.planet, D.sector - 1, D.rev), tl = $('dev-tier');
       if (tl) tl.textContent = `Difficulty tier ${tier} (enemy HP ×${(1 + tier * C.difficulty.hpPerTier).toFixed(1)}, damage ×${(1 + tier * C.difficulty.dmgPerTier).toFixed(2)})`;
     }
@@ -6201,6 +6419,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         if (['shot', 'beam', 'hit', 'kill', 'boom', 'ore', 'hurt', 'heal', 'rage', 'fuse', 'dodge', 'bossShot', 'windup', 'buddyDown', 'revive', 'swap'].includes(e.t) || (e.t === 'step' && !e.buddy)) audio.play(e.t, e);
         if (e.t === 'swap') buildSwap();
         if (e.t === 'bossIn') audio.theme('boss');
+        if (e.t === 'kill' && e.boss && !run.enemies.some((o) => !o.dead && o.d.boss)) audio.theme(C.planets[run.theme].id); // boss down: back to the playlist
         if (e.t === 'waveClear' && run.phase !== 'x') audio.theme(C.planets[run.theme].id);
         if (e.t === 'wave') { if (!e.boss) audio.theme(C.planets[run.theme].id); audio.play('wave'); if (e.boss) { audio.play('bossIn'); announce(`<b>BOSS INCOMING</b><small>${C.enemies[e.boss].name}</small>`, 'boss', 2200); } else announce(`<b>WAVE ${e.n}</b>`, '', 1100); }
         if (e.t === 'waveClear') { if (e.perfect) { audio.play('perfect'); announce('<b>PERFECT WAVE</b><small>+ gold star</small>', 'gold', 1500); } else { audio.play('waveClear'); announce('<b>WAVE CLEAR</b>', '', 1100); } }
@@ -6234,7 +6453,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           R.consume(G.run, G.run.events); handleEvents(G.run); G.run.events.length = 0;
           if (G.run.over) break;
         }
-        if (!G.hudT || now - G.hudT > 500) { G.hudT = now; R.setHud(hudRects()); }
+        if (!G.hudT || now - G.hudT > 500) { G.hudT = now; R.setHud(hudRects(), hudInsets()); }
         G.view = R.draw(G.run, dt);
         updateHud(G.run);
         if (G.run.over === 'dead' && !G.deadT) G.deadT = now;
@@ -6248,6 +6467,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         G.view = R.draw(G.run, 0);
       } else {
         // Menus: an attract-mode battle plays behind them.
+        if (G.hudT) { G.hudT = 0; R.setHud([], null); } // no HUD over the menus
         if (!G.attract || G.attract.over || G.attract.wave > 7) newAttract();
         const a = G.attract;
         const n2 = Math.min(6, Math.max(1, Math.ceil(dt / STEP - 0.001)));
@@ -6268,6 +6488,13 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     }
 
     addEventListener('resize', () => { R.resize(); G.hudT = 0; });
+    // The main console covers a full-width-ish strip: keep the camera's framing clear of it (bottom in landscape, top in portrait).
+    function hudInsets() {
+      const el = root.querySelector('.console'), cr = canvas.getBoundingClientRect();
+      if (!el || el.closest('[hidden]')) return { t: 0, b: 0 };
+      const r = el.getBoundingClientRect(), mid = (r.top + r.bottom) / 2 - cr.top;
+      return mid > cr.height / 2 ? { t: 0, b: Math.max(0, cr.bottom - r.top + 6) } : { t: Math.max(0, r.bottom - cr.top + 6), b: 0 };
+    }
     // Where HUD panels cover the play canvas, so off-screen enemy arrows can steer clear of them.
     function hudRects() {
       const cr = canvas.getBoundingClientRect(), out = [];
