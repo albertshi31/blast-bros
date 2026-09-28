@@ -545,6 +545,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
 .devpanel .slider { grid-template-columns: 1fr 70px; margin: 10px 0; }
 .devpanel .slider select { grid-column: 1 / -1; }
 .devpanel select { font: inherit; font-weight: 700; font-size: 16px; padding: 10px 12px; border-radius: 8px; background: #0a1522; color: #e8f2ff; border: 2px solid #2a4a6a; min-width: 0; width: 100%; }
+.cbar.hp .track.shielded { box-shadow: 0 0 0 2px #6ecbff, 0 0 12px rgba(110,203,255,.7), inset 0 1px 3px rgba(0,0,0,.8); }
 
 </style>
 <div class="bb" id="bb"></div>
@@ -780,7 +781,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     // Quick-use items carried into battle (bought in the store, max `carry` each).
     items: {
       medkit:  { name: 'Med Syringe', price: 150, lvl: 1, heal: 0.5, blurb: 'Jab it, heal half your HP. Tastes like victory and pennies.' },
-      grenade: { name: 'Frag Grenade', price: 120, lvl: 3, dmg: 130, radius: 115, fuse: 0.85, range: 280, blurb: 'Lob it where the aliens are thickest.' },
+      grenade: { name: 'Frag Grenade', price: 120, lvl: 3, dmg: 230, radius: 175, fuse: 0.8, range: 430, knock: 70, blurb: 'Lob it where the aliens are thickest. Big blast, knocks them flat.' },
     },
     carry: 20, startItems: { medkit: 2, grenade: 2 },
     // The red "!" button: fills with kills, then Bro Rage (double damage, faster feet).
@@ -895,7 +896,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     difficulty: { hpPerTier: 0.022, dmgPerTier: 0.0064, speedPerTier: 0.0012, bossPerTier: 0.018, oreTier: 0.014, revTiers: 100,
       budgetBase: 7, budgetPerTier: 0.25, budgetPerRev: 4, budgetPerWave: 2.4, spawnGap: 0.6 },
     endless: { budgetBase: 7, budgetPerWave: 2.9, tierPerWave: 1.1, bossEvery: 10, buxEvery: 5 },
-    drops: { heal: 0.045, healAmt: 25, rage: 0.018, rageTime: 6, rageMul: 2, oreMagnet: 150, oreLife: 14 },
+    drops: { heal: 0.045, healAmt: 25, rage: 0.018, rageTime: 10, rageMul: 2, shield: 0.015, shieldTime: 12, shieldHp: 0.6, oreMagnet: 150, oreLife: 14 },
 
     // Refinery: ore → coins. Multiplier grows with waves cleared and perfect waves.
     refinery: { perWave: 0.05, perPerfect: 0.1, cap: 2, megaMul: 2, megaMinutes: 5 },
@@ -1219,7 +1220,13 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     if (!b.alive || b.down || b.iframe > 0 || amt <= 0 || run.god) return;
     const a = b.armor;
     if (a.dodge && run.rng() < a.dodge) { ev(run, { t: 'dodge', x: b.x, y: b.y }); return; }
-    const real = amt * (1 - a.def);
+    let real = amt * (1 - a.def);
+    if (b.shield > 0) { // shield powerup soaks damage first
+      const s = Math.min(b.shield, real); b.shield -= s; real -= s;
+      ev(run, { t: 'shieldHit', x: b.x, y: b.y, broke: b.shield <= 0 });
+      if (b.shield <= 0) { b.shield = 0; b.shieldT = 0; }
+      if (real <= 0.01) { b.iframe = 0.12; return; }
+    }
     b.hp -= real; b.iframe = run.C.player.iframes; b.hurtT = 0.25;
     if (sx != null) { const d = hyp(b.x - sx, b.y - sy) || 1; b.vx += ((b.x - sx) / d) * 260; b.vy += ((b.y - sy) / d) * 260; }
     if (!b.buddy) { run.wavePerfect = false; run.hurtTotal += real; run.streak = 0; }
@@ -1265,6 +1272,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     }
     if (run.rng() < dr.heal && !e.parent) run.pickups.push({ kind: 'heal', x: e.x, y: e.y, vx: 0, vy: 0, life: 12 });
     else if (run.rng() < dr.rage && !e.parent) run.pickups.push({ kind: 'rage', x: e.x, y: e.y, vx: 0, vy: 0, life: 12 });
+    else if (run.rng() < dr.shield && !e.parent) run.pickups.push({ kind: 'shield', x: e.x, y: e.y, vx: 0, vy: 0, life: 12 });
     if (e.d.ai === 'kamikaze') explode(run, e.x, e.y, e.d.radius, 40, 0, null);
     if (e.d.split) for (let i = 0; i < e.d.splitN; i++) { const k = spawnEnemy(run, e.d.split, e.x + (i ? 12 : -12), e.y + (run.rng() - 0.5) * 20, 0.05); pushOut(run, k); }
     if (e.d.puddle) run.puddles.push({ x: e.x, y: e.y, r: e.d.puddle.r, dps: e.d.puddle.dps * e.dmgMul, life: e.d.puddle.life });
@@ -1272,7 +1280,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
   }
   // Explosion: dmgE to enemies/barrels, dmgP to bros (0 = friendly).
   function explode(run, x, y, radius, dmgE, dmgP, src, tag) {
-    ev(run, { t: 'boom', x, y, r: radius });
+    ev(run, { t: 'boom', x, y, r: radius, tag });
     for (const e of run.enemies) if (!e.dead && !e.under && hyp(e.x - x, e.y - y) < radius + e.r) hurtEnemy(run, e, dmgE, src, tag);
     for (const b of run.barrels) if (b.hp > 0 && hyp(b.x - x, b.y - y) < radius + b.r) hitBarrel(run, b, 999);
     if (dmgP > 0) for (const b of [run.p, run.b]) if (b && hyp(b.x - x, b.y - y) < radius + b.r) hurtBro(run, b, dmgP, x, y);
@@ -1452,7 +1460,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     if (inp.nade && run.items.grenade > 0) {
       const g = C.items.grenade, a = p.aim;
       run.items.grenade--; run.used.grenade++;
-      run.bullets.push({ owner: p, kind: 'nade', x: p.x, y: p.y, vx: Math.cos(a) * g.range * 2.2, vy: Math.sin(a) * g.range * 2.2, r: 6, life: g.fuse, age: 0, dmg: g.dmg * (1 + run.tier * 0.1), radius: g.radius, pierce: 0, hit: null, home: 0 });
+      run.bullets.push({ owner: p, kind: 'nade', x: p.x, y: p.y, vx: Math.cos(a) * g.range * 3.4, vy: Math.sin(a) * g.range * 3.4, r: 6, life: g.fuse, age: 0, dmg: g.dmg * (1 + run.tier * 0.1), radius: g.radius, knock: g.knock, pierce: 0, hit: null, home: 0 }); // drag 3.2/s: lands ~range away
       ev(run, { t: 'throw', x: p.x, y: p.y });
     }
     if (inp.special && run.meter >= C.special.kills) {
@@ -1941,7 +1949,14 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         u.vx *= 1 - dt * 3.2; u.vy *= 1 - dt * 3.2;
         const nx = u.x + u.vx * dt, ny = u.y + u.vy * dt;
         if (inCrate(run, nx, ny, 2) || nx < 50 || ny < 50 || nx > W - 50 || ny > H - 50) { u.vx *= -0.3; u.vy *= -0.3; } else { u.x = nx; u.y = ny; }
-        if (u.life <= 0) { u.dead = true; explode(run, u.x, u.y, u.radius, u.dmg, 0, u.owner, 'nade'); }
+        if (u.life <= 0) {
+          u.dead = true; explode(run, u.x, u.y, u.radius, u.dmg, 0, u.owner, 'nade');
+          for (const e of run.enemies) { // shove everything in the blast outward (bosses barely budge)
+            if (e.dead || e.under) continue;
+            const dx = e.x - u.x, dy = e.y - u.y, d = hyp(dx, dy) || 1;
+            if (d < u.radius + e.r) { const f = (1 - d / (u.radius + e.r)) * u.knock * (e.d.boss ? 0.15 : 1); e.x += (dx / d) * f; e.y += (dy / d) * f; pushOut(run, e); }
+          }
+        }
         continue;
       }
       if (u.home) {
@@ -2045,7 +2060,8 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         k.dead = true;
         if (k.kind === 'ore') { run.ore += k.val; ev(run, { t: 'ore', x: k.x, y: k.y }); }
         else if (k.kind === 'heal') { p.hp = Math.min(p.maxHp, p.hp + D.healAmt * p.maxHp / 100); ev(run, { t: 'heal', x: k.x, y: k.y }); }
-        else if (k.kind === 'rage') { run.rage = D.rageTime; ev(run, { t: 'rage', x: k.x, y: k.y }); }
+        else if (k.kind === 'rage') { run.rage = Math.max(run.rage, D.rageTime); ev(run, { t: 'rage', x: k.x, y: k.y }); }
+        else if (k.kind === 'shield') { p.shieldMax = p.maxHp * D.shieldHp; p.shield = p.shieldMax; p.shieldT = D.shieldTime; ev(run, { t: 'shieldOn', x: p.x, y: p.y }); }
       } else if (k.life <= 0 && !k.vacuum) k.dead = true;
     }
     run.pickups = run.pickups.filter((k) => !k.dead);
@@ -2072,7 +2088,10 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     run.beams = [];
     if (run.over) return;
     run.t += dt;
-    if (run.rage > 0) run.rage -= dt;
+    // Buff timers only run while there's something to fight, so a pickup grabbed at the end of a wave carries into the next.
+    const ticking = run.phase === 'fight';
+    if (run.rage > 0 && ticking) run.rage -= dt;
+    const p0 = run.p; if (p0.shieldT > 0 && ticking) { p0.shieldT -= dt; if (p0.shieldT <= 0) { p0.shield = 0; ev(run, { t: 'shieldOff', x: p0.x, y: p0.y }); } }
     stepPlayer(run, inp, dt);
     if (run.over) return;
     stepBuddy(run, dt);
@@ -4002,7 +4021,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         g.fillStyle = '#2a2a20'; g.beginPath(); g.moveTo(-11, -9); for (let q = -9; q <= 9; q += 3) g.lineTo(q % 2 ? -6 : -8, q); g.lineTo(-11, 9); g.fill();
       }
       g.fillStyle = dark; g.fillRect(-6, -12.5, 2, 25);
-      if (S.cross) { g.fillStyle = '#d02030'; g.fillRect(-8, -1.5, 8, 3); g.fillRect(-5.5, -4, 3, 8); }
+      if (S.cross) { g.fillStyle = '#23a045'; g.fillRect(-8, -1.5, 8, 3); g.fillRect(-5.5, -4, 3, 8); }
       if (S.dynamite) { // vest of dynamite sticks and wires
         for (let q = -2; q <= 2; q++) { cyl(g, -8, q * 4 - 1.4, 11, 2.8, '#b8201a', false); g.fillStyle = '#e8d8b0'; g.fillRect(2.6, q * 4 - 1.4, 0.8, 2.8); }
         g.strokeStyle = '#1a1a1a'; g.lineWidth = 0.6; g.beginPath(); g.moveTo(-8, -9); g.lineTo(-8, 9); g.stroke(); g.strokeStyle = '#2060c8'; g.beginPath(); g.moveTo(1, -8); g.quadraticCurveTo(5, 0, 1, 8); g.stroke();
@@ -4503,10 +4522,15 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
             break;
           }
           case 'boom':
-            fireball(e.x, e.y, e.r); smoke(e.x, e.y, 10, e.r * 0.9, '#3a3430', 30); sparks(e.x, e.y, 18, e.r * 4); chunks(e.x, e.y, 10, '#2a2420', e.r * 3);
+            fireball(e.x, e.y, Math.min(e.r, 110)); smoke(e.x, e.y, 10, e.r * 0.9, '#3a3430', 30); sparks(e.x, e.y, 18, e.r * 4); chunks(e.x, e.y, 10, '#2a2420', e.r * 3);
             bakeScorch(e.x, e.y, e.r * 0.9);
-            flashes.push({ x: e.x, y: e.y, r: e.r * 4.5, life: 0.3, max: 0.3, color: '#ffa040' });
-            cam.shake = Math.max(cam.shake, Math.min(16, e.r / 7));
+            if (e.tag === 'nade') { // frag: a dust shockwave out to the real blast edge, plus a ring of kicked-up dirt
+              add({ k: 'wave', x: e.x, y: e.y, vx: 0, vy: 0, life: 0.35, max: 0.35, r: e.r });
+              for (let k = 0; k < 18; k++) { const a = (k / 18) * TAU, s = e.r * 2.2; add({ k: 'smoke', x: e.x + Math.cos(a) * e.r * 0.3, y: e.y + Math.sin(a) * e.r * 0.3, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.5 + Math.random() * 0.3, max: 0.8, size: 14 + Math.random() * 10, color: '#8a7050' }); }
+              chunks(e.x, e.y, 14, '#4a3a28', e.r * 3.2);
+            }
+            flashes.push({ x: e.x, y: e.y, r: Math.min(e.r * 3, 360), life: 0.25, max: 0.25, color: '#ff9030' }); // light on the ground, capped so big blasts don't white out the screen
+            cam.shake = Math.max(cam.shake, Math.min(9, e.r / 14));
             break;
           case 'hit':
             if (Math.random() < 0.55) {
@@ -4554,6 +4578,9 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           case 'heal': floatText('+HP', e.x, e.y, '#6ff29d'); if (e.item) flashes.push({ x: e.x, y: e.y, r: 120, life: 0.4, max: 0.4, color: '#6ff29d' }); break;
           case 'rageOn': flashes.push({ x: e.x, y: e.y, r: 260, life: 0.5, max: 0.5, color: '#ff4a1a' }); cam.shake = Math.max(cam.shake, 8); break;
           case 'rage': floatText('2× DAMAGE', e.x, e.y, '#ff6a3a'); break;
+          case 'shieldOn': floatText('SHIELD UP', e.x, e.y - 20, '#7fd8ff'); break;
+          case 'shieldHit': sparks(e.x, e.y, 4, 200, '#9fe4ff'); if (e.broke) floatText('SHIELD DOWN', e.x, e.y - 20, '#7fd8ff'); break;
+          case 'shieldOff': floatText('SHIELD FADED', e.x, e.y - 20, '#7fd8ff'); break;
           case 'revive': flashes.push({ x: e.x, y: e.y, r: 160, life: 0.4, max: 0.4, color: '#6ff29d' }); break;
           case 'dead': bakeSplat(e.x, e.y, 18, '#5a0d0d', 0.7); chunks(e.x, e.y, 20, '#8a1414', 240); break;
           case 'windup': flashes.push({ x: e.x, y: e.y, r: 160, life: 0.5, max: 0.5, color: '#ff3030' }); break;
@@ -4618,6 +4645,14 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       ctx.restore();
       if (blink) ctx.globalAlpha = 0.5;
       litEnd(b.buddy ? 0.7 : 0.85); ctx.globalAlpha = 1;
+      if (b.shield > 0) { // energy bubble; thins out as it soaks damage, flickers in its last 2 seconds
+        const f = b.shield / (b.shieldMax || 1), fade = b.shieldT < 2 && Math.floor(t * 8) % 2 ? 0.4 : 1, R2 = 40;
+        const bg = ctx.createRadialGradient(b.x, b.y, R2 * 0.55, b.x, b.y, R2);
+        bg.addColorStop(0, 'rgba(90,190,255,0)'); bg.addColorStop(0.85, `rgba(110,200,255,${(0.12 + f * 0.18) * fade})`); bg.addColorStop(1, `rgba(170,230,255,${(0.35 + f * 0.35) * fade})`);
+        ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(b.x, b.y, R2, 0, TAU); ctx.fill();
+        ctx.strokeStyle = `rgba(200,240,255,${0.6 * fade})`; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(b.x, b.y, R2, -Math.PI / 2, -Math.PI / 2 + TAU * f); ctx.stroke();
+        ctx.fillStyle = `rgba(255,255,255,${0.25 * fade})`; ctx.beginPath(); ctx.ellipse(b.x - 14, b.y - 18, 10, 4, -0.6, 0, TAU); ctx.fill();
+      }
       if (b.buddy) {
         const bw = 30, f = Math.max(0, b.hp / b.maxHp);
         ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(b.x - bw / 2 - 1, b.y - 40, bw + 2, 5);
@@ -4796,8 +4831,20 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           ctx.save(); ctx.translate(kp.x, kp.y + Math.sin(t * 4 + kp.x) * 1.5); ctx.scale(1.6, 1.6); ctx.translate(-kp.x, -kp.y);
           ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(kp.x - 9, kp.y - 6, 22, 18);
           ctx.fillStyle = '#4a5a3a'; ctx.fillRect(kp.x - 11, kp.y - 10, 22, 18); ctx.fillStyle = '#5c6e48'; ctx.fillRect(kp.x - 11, kp.y - 10, 22, 3);
-          ctx.fillStyle = '#e8e2d0'; ctx.fillRect(kp.x - 6, kp.y - 7, 12, 12); ctx.fillStyle = '#b01a1a'; ctx.fillRect(kp.x - 1.5, kp.y - 5.5, 3, 9); ctx.fillRect(kp.x - 4.5, kp.y - 2.5, 9, 3);
+          ctx.fillStyle = '#e8e2d0'; ctx.fillRect(kp.x - 6, kp.y - 7, 12, 12); ctx.fillStyle = '#23a045'; ctx.fillRect(kp.x - 1.5, kp.y - 5.5, 3, 9); ctx.fillRect(kp.x - 4.5, kp.y - 2.5, 9, 3);
           ctx.restore();
+        } else if (kp.kind === 'shield') { // shield pickup: blue crest badge, labelled
+          const by = kp.y - 8 + Math.sin(t * 4 + kp.x) * 2.5, pr = 15;
+          ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(kp.x + 3, kp.y + 8, 13, 5.5, 0, 0, TAU); ctx.fill();
+          ctx.strokeStyle = `rgba(120,210,255,${0.35 + 0.3 * Math.sin(t * 6)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(kp.x, by, pr + 5 + Math.sin(t * 6) * 2, 0, TAU); ctx.stroke();
+          const crest = () => { ctx.beginPath(); ctx.moveTo(kp.x, by - pr); ctx.lineTo(kp.x + pr * 0.9, by - pr * 0.6); ctx.lineTo(kp.x + pr * 0.8, by + pr * 0.2); ctx.quadraticCurveTo(kp.x + pr * 0.5, by + pr * 0.8, kp.x, by + pr); ctx.quadraticCurveTo(kp.x - pr * 0.5, by + pr * 0.8, kp.x - pr * 0.8, by + pr * 0.2); ctx.lineTo(kp.x - pr * 0.9, by - pr * 0.6); ctx.closePath(); };
+          ctx.save(); ctx.translate(kp.x, by); ctx.scale(1.15, 1.15); ctx.translate(-kp.x, -by); crest(); ctx.fillStyle = '#06203a'; ctx.fill(); ctx.restore();
+          const sg = ctx.createLinearGradient(0, by - pr, 0, by + pr); sg.addColorStop(0, '#9fe4ff'); sg.addColorStop(1, '#1a6ab8');
+          crest(); ctx.fillStyle = sg; ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.moveTo(kp.x, by - pr + 3); ctx.lineTo(kp.x - pr * 0.7, by - pr * 0.45); ctx.lineTo(kp.x - pr * 0.62, by + 2); ctx.lineTo(kp.x, by - 1); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = '#eaf8ff'; ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(kp.x, by - 7); ctx.lineTo(kp.x, by + 7); ctx.moveTo(kp.x - 6, by - 1); ctx.lineTo(kp.x + 6, by - 1); ctx.stroke();
+          ctx.font = '800 10px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = '#9fe4ff';
+          ctx.strokeText('SHIELD', kp.x, by - pr - 9); ctx.fillText('SHIELD', kp.x, by - pr - 9);
         } else {
           // Bro Rage pickup: the same red "!" as the HUD rage button, floating, with a label saying what it does
           const by = kp.y - 8 + Math.sin(t * 4 + kp.x) * 2.5, pr = 15;
@@ -4871,6 +4918,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       for (const q of parts) {
         if (q.k !== 'chunk' && q.k !== 'casing' && q.k !== 'smoke') continue;
         q.life -= dt; q.x += q.vx * dt; q.y += q.vy * dt;
+        if (q.k === 'wave') { const f = 1 - q.life / q.max; ctx.strokeStyle = `rgba(255,225,180,${(1 - f) * 0.55})`; ctx.lineWidth = 2 + (1 - f) * 7; ctx.beginPath(); ctx.arc(q.x, q.y, q.r * (0.25 + f * 0.8), 0, TAU); ctx.stroke(); continue; }
         if (q.k === 'smoke') { q.vx *= 1 - dt * 1.5; q.vy *= 1 - dt * 1.5; const f = q.life / q.max; ctx.globalAlpha = Math.max(0, f) * 0.5; ctx.drawImage(tinted(PUFF, q.color), q.x - q.size * (1.6 - f), q.y - q.size * (1.6 - f), q.size * 2 * (1.6 - f), q.size * 2 * (1.6 - f)); continue; }
         q.vx *= 1 - dt * 5; q.vy *= 1 - dt * 5; q.rot += (q.spin || 8) * dt;
         ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.rot);
@@ -4914,7 +4962,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         glow(ex, ey, e.r * (e.d.boss ? 0.35 : 0.45), eye[2], blink * 0.8);
       }
       if (run.rage > 0 && p.alive) glow(p.x, p.y, 40, '#ff4a1a', 0.35 + Math.sin(t * 20) * 0.15);
-      for (const kp of run.pickups) if (kp.kind === 'ore') glow(kp.x, kp.y - 2, 12, '#ffa020', 0.35); else if (kp.kind === 'heal') glow(kp.x, kp.y - 2, 30, '#6ff29d', 0.35 + Math.sin(t * 5) * 0.1); else if (kp.kind === 'rage') glow(kp.x, kp.y - 4, 22, '#ff3a1a', 0.5);
+      for (const kp of run.pickups) if (kp.kind === 'ore') glow(kp.x, kp.y - 2, 12, '#ffa020', 0.35); else if (kp.kind === 'heal') glow(kp.x, kp.y - 2, 30, '#6ff29d', 0.35 + Math.sin(t * 5) * 0.1); else if (kp.kind === 'rage') glow(kp.x, kp.y - 4, 22, '#ff3a1a', 0.5); else if (kp.kind === 'shield') glow(kp.x, kp.y - 4, 24, '#4ab8ff', 0.5);
       // player projectiles
       for (const u of run.bullets) {
         const zs = u.sz && u.sz !== 1 && u.kind !== 'flame' && u.kind !== 'rainbow' ? u.sz : 0;
@@ -5050,7 +5098,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         } else if (q.k === 'fire') {
           q.life -= dt; q.x += q.vx * dt; q.y += q.vy * dt; q.vx *= 1 - dt * 5; q.vy *= 1 - dt * 5;
           const f = clamp(q.life / q.max, 0, 1);
-          ctx.globalAlpha = f; ctx.drawImage(tinted(PUFF, f > 0.6 ? '#ffe7a0' : f > 0.35 ? '#ff9a30' : '#b8380c'), q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
+          ctx.globalAlpha = f * 0.6; ctx.drawImage(tinted(PUFF, f > 0.6 ? '#ffb860' : f > 0.35 ? '#ff8a2a' : '#a8340c'), q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
         } else if (q.k === 'muzzle') {
           q.life -= dt;
           ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.a); ctx.globalAlpha = 1;
@@ -6083,7 +6131,12 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const hud = { hp: -1, ore: -1, wave: '', stars: '', boss: null, bossPct: -1, xp: -1, items: '', meter: -1, streak: -1, xpl: '' };
     function updateHud(run) {
       const p = run.p, hpf = Math.max(0, p.hp / p.maxHp);
-      if (hpf !== hud.hp) { hud.hp = hpf; $('hp-fill').style.width = hpf * 100 + '%'; $('hp-fill').className = hpf < 0.3 ? 'low' : ''; $('hp-text').textContent = Math.ceil(p.hp) + ' / ' + p.maxHp; }
+      const shk = hpf + ':' + Math.ceil(p.shield || 0);
+      if (shk !== hud.hp) {
+        hud.hp = shk; $('hp-fill').style.width = hpf * 100 + '%'; $('hp-fill').className = hpf < 0.3 ? 'low' : '';
+        $('hp-text').textContent = Math.ceil(p.hp) + ' / ' + p.maxHp + (p.shield > 0 ? '  +' + Math.ceil(p.shield) + ' shield' : '');
+        $('hp-fill').parentNode.classList.toggle('shielded', p.shield > 0);
+      }
       const totalXp = save.xp + run.xp;
       if (totalXp !== hud.xp) {
         hud.xp = totalXp;
@@ -6101,16 +6154,23 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         hud.items = items; $('med-n').textContent = run.items.medkit; $('nade-n').textContent = run.items.grenade;
         $('med-btn').classList.toggle('empty', !run.items.medkit); $('nade-btn').classList.toggle('empty', !run.items.grenade);
       }
-      const meter = run.rage > 0 ? -2 : run.meter;
+      const meter = run.rage > 0 ? (run.phase === 'fight' ? -2 : -3) : run.meter;
       if (meter !== hud.meter) {
         hud.meter = meter; const full = run.meter >= C.special.kills;
         $('special-fill').style.height = (run.rage > 0 ? 100 : (run.meter / C.special.kills) * 100) + '%';
         $('special-btn').classList.toggle('ready', full && run.rage <= 0); $('special-btn').classList.toggle('active', run.rage > 0);
         $('rage-fill').style.width = (run.rage > 0 ? 100 : Math.min(1, run.meter / C.special.kills) * 100) + '%';
         $('rage-fill').parentNode.parentNode.className = 'cbar rg' + (run.rage > 0 ? ' on' : full ? ' full' : '');
-        $('rage-text').textContent = run.rage > 0 ? 'RAGING · 2× DAMAGE' : full ? (touchUI ? 'READY · TAP !' : 'READY · PRESS R') : 'kills ' + Math.min(run.meter, C.special.kills) + ' / ' + C.special.kills;
+        $('rage-text').textContent = run.rage > 0 ? (run.phase === 'fight' ? 'RAGING · 2× DAMAGE' : 'RAGE SAVED FOR NEXT WAVE') : full ? (touchUI ? 'READY · TAP !' : 'READY · PRESS R') : 'kills ' + Math.min(run.meter, C.special.kills) + ' / ' + C.special.kills;
       }
-      if (run.rage > 0) { const rf = Math.max(0, run.rage / C.special.time); if (Math.abs(rf - (hud.rageT || 0)) > 0.02) { hud.rageT = rf; $('rage-fill').style.width = rf * 100 + '%'; } }
+      if (run.rage <= 0) hud.rageMax = 0; else hud.rageMax = Math.max(hud.rageMax || 0, run.rage);
+      if (run.rage > 0) { const rf = Math.max(0, run.rage / hud.rageMax); if (Math.abs(rf - (hud.rageT || 0)) > 0.02) { hud.rageT = rf; $('rage-fill').style.width = rf * 100 + '%'; } }
+      if (!save.tips.shieldPick && run.pickups.some((k) => k.kind === 'shield')) {
+        save.tips.shieldPick = true; persist();
+        const h = $('hint'); h.hidden = false; h.classList.add('wide');
+        h.innerHTML = '<b>Shield dropped!</b> Walk over the blue crest: it soaks up ' + Math.round(C.drops.shieldHp * 100) + '% of your health in damage for ' + C.drops.shieldTime + ' seconds.';
+        setTimeout(() => { h.hidden = true; h.classList.remove('wide'); }, 6000);
+      }
       if (!save.tips.ragePick && run.pickups.some((k) => k.kind === 'rage')) {
         save.tips.ragePick = true; persist();
         const h = $('hint'); h.hidden = false; h.classList.add('wide');
