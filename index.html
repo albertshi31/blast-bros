@@ -551,6 +551,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
 .nav-cur .orepill.has { color: #ffd98a; box-shadow: 0 0 0 1px rgba(255,190,80,.5), inset 0 1px 3px rgba(0,0,0,.8); }
 .nav-cur .orepill .ico { width: 16px; height: 20px; }
 .muted.small { font-size: 13px; margin: 6px auto 10px; max-width: 46ch; }
+.power em { display: block; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: #9fdcff; opacity: .85; text-align: right; }
 
 </style>
 <div class="bb" id="bb"></div>
@@ -575,7 +576,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     // Bullet options: count/spread (fans), akimbo (alternating hands), burst, sweep, pierce, bounce, home (turn rate),
     // spinup (seconds to full rate), chill (slow seconds), burn (damage/sec), blast (splash radius on hit).
     // art: how the gun is drawn (style + colours); lvl: player level needed to buy.
-    upgrade: { maxLvl: 10, premiumMax: 20, dmgPerLvl: 0.2, premiumDmgPerLvl: 0.26, ratePerLvl: 0.04, costFactor: 0.32, costPow: 1.35 },
+    upgrade: { maxLvl: 10, premiumMax: 20, dmgPerLvl: 0.1, premiumDmgPerLvl: 0.15, ratePerLvl: 0.03, costFactor: 0.07, costPow: 1.35 },
     mastery: [150, 600, 2000],          // kills with a gun for Bronze / Silver / Gold (+5/10/15% damage)
     classes: ['Pistol', 'Rifle', 'Shotgun', 'Spread', 'Heavy', 'Special', 'Laser'],
     weapons: {
@@ -784,7 +785,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     slots: ['head', 'torso', 'legs'],
     slotShare: { head: 0.25, torso: 0.5, legs: 0.25 },
     slotPrice: { head: 0.3, torso: 0.45, legs: 0.25 },
-    armorUpgrade: { maxLvl: 10, premiumMax: 20, hpPerLvl: 0.1, premiumHpPerLvl: 0.13, statPerLvl: 0.05, premiumStatPerLvl: 0.065, costFactor: 0.3, costPow: 1.35 },
+    armorUpgrade: { maxLvl: 10, premiumMax: 20, hpPerLvl: 0.1, premiumHpPerLvl: 0.13, statPerLvl: 0.05, premiumStatPerLvl: 0.065, costFactor: 0.1, costPow: 1.35 },
 
     // Quick-use items carried into battle (bought in the store, max `carry` each).
     items: {
@@ -858,7 +859,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       tripod:   { name: 'Laser Tripod', hp: 140, speed: 0, r: 20, touch: 10, cost: 5, ore: 10, color: '#6a6e78', ai: 'tripod', turn: 0.9, len: 430, dps: 26 },
       drone:    { name: 'Zap Drone', hp: 36, speed: 125, r: 13, touch: 8, cost: 3, ore: 6, color: '#5ee7e7', ai: 'drone',
         orbit: 230, shootEvery: 1.6, bullet: { dmg: 8, speed: 380, home: 0.5 } },
-      nest:     { name: 'Brood Pod', hp: 125, speed: 0, r: 26, touch: 12, cost: 7, ore: 16, color: '#d65db1', ai: 'nest',
+      nest:     { name: 'Brood Pod', hp: 125, speed: 0, r: 26, touch: 12, cost: 9, ore: 16, color: '#d65db1', ai: 'nest',
         spawnEvery: 4.2, maxKids: 5 },
       // Bosses: hp is at tier 0 and grows with tier like everyone else.
       b_mama:   { name: 'Sergeant Mama', boss: true, hp: 1500, speed: 70, r: 52, touch: 24, cost: 0, ore: 120, color: '#5cbf4a', ai: 'b_mama' },
@@ -867,48 +868,48 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       b_ape:    { name: 'Silverback Warlord', boss: true, hp: 1900, speed: 72, r: 54, touch: 26, cost: 0, ore: 150, color: '#5a5048', ai: 'b_ape' },
       b_colossus:{ name: 'The Rotting Colossus', boss: true, hp: 2600, speed: 44, r: 58, touch: 28, cost: 0, ore: 210, color: '#6a8a4a', ai: 'b_colossus' },
       b_hydra:  { name: 'Sludge Hydra', boss: true, hp: 3300, speed: 40, r: 56, touch: 26, cost: 0, ore: 270, color: '#7a9a30', ai: 'b_hydra' },
-      b_tyrant: { name: 'Crystal Tyrant', boss: true, hp: 3600, speed: 60, r: 52, touch: 28, cost: 0, ore: 300, color: '#9a60e0', ai: 'b_tyrant' },
-      b_dork:   { name: 'Grand Dork Zorblax', boss: true, hp: 3800, speed: 64, r: 58, touch: 30, cost: 0, ore: 320, color: '#f15bb5', ai: 'b_dork' },
+      b_tyrant: { name: 'Crystal Tyrant', boss: true, hp: 3200, speed: 60, r: 52, touch: 28, cost: 0, ore: 300, color: '#9a60e0', ai: 'b_tyrant' },
+      b_dork:   { name: 'Grand Dork Zorblax', boss: true, hp: 3400, speed: 64, r: 58, touch: 30, cost: 0, ore: 320, color: '#f15bb5', ai: 'b_dork' },
     },
 
     // pool: [enemy, first sector it appears in (0-based)]. Revolutions II+ use the whole pool from sector 1.
     planets: [
-      { id: 'dust', name: 'Rust Flats', blurb: 'Scorched desert, wrecked cars, no rules. Barrels go boom.', floor: '#8a6a45', floor2: '#5a4128', glow: '#e0913c',
-        pool: [['runner', 0, ['bomber', 1], ['mortar', 5]], ['grunt', 0], ['zombie', 1], ['shotgunner', 2], ['kamikaze', 3], ['blade', 5], ['minelayer', 6], ['turret', 7], ['medic', 8]],
+      { id: 'dust', heat: 1.0, name: 'Rust Flats', blurb: 'Scorched desert, wrecked cars, no rules. Barrels go boom.', floor: '#8a6a45', floor2: '#5a4128', glow: '#e0913c',
+        pool: [['runner', 0], ['bomber', 1], ['mortar', 5], ['grunt', 0], ['zombie', 1], ['shotgunner', 2], ['kamikaze', 3], ['blade', 5], ['minelayer', 6], ['turret', 7], ['medic', 8]],
         barrels: 5, captain: 'cap_breacher', boss: 'b_mama' },
-      { id: 'jungle', name: 'Jungle Prime', blurb: 'Hot, wet and everything bites. Watch the undergrowth.', floor: '#3a6a2a', floor2: '#1f3a18', glow: '#8ae04a',
-        pool: [['runner', 0, ['hexer', 2], ['charger', 6]], ['leaper', 0], ['grunt', 1], ['spitter', 2], ['sniper', 3], ['blade', 4], ['medic', 5], ['burrower', 6], ['splitter', 7], ['heavy', 8]],
+      { id: 'jungle', heat: 1.0, name: 'Jungle Prime', blurb: 'Hot, wet and everything bites. Watch the undergrowth.', floor: '#3a6a2a', floor2: '#1f3a18', glow: '#8ae04a',
+        pool: [['runner', 0], ['hexer', 2], ['charger', 6], ['leaper', 0], ['grunt', 1], ['spitter', 2], ['sniper', 3], ['blade', 4], ['medic', 5], ['burrower', 6], ['splitter', 7], ['heavy', 8]],
         barrels: 4, captain: 'cap_sniper', boss: 'b_ape' },
-      { id: 'magma', name: 'Magma Rock', blurb: 'Volcanic badlands. The ground glows and so will you.', floor: '#27201d', floor2: '#443931', glow: '#ff5a1a',
-        pool: [['runner', 0, ['charger', 3], ['mortar', 4], ['tripod', 8]], ['grunt', 0], ['kamikaze', 0], ['shotgunner', 1], ['shell', 2], ['sniper', 3], ['gootank', 4], ['heavy', 5], ['tankhead', 6], ['turret', 7], ['minelayer', 8]],
+      { id: 'magma', heat: 0.94, name: 'Magma Rock', blurb: 'Volcanic badlands. The ground glows and so will you.', floor: '#27201d', floor2: '#443931', glow: '#ff5a1a',
+        pool: [['runner', 0], ['charger', 3], ['mortar', 4], ['tripod', 8], ['grunt', 0], ['kamikaze', 0], ['shotgunner', 1], ['shell', 2], ['sniper', 3], ['gootank', 4], ['heavy', 5], ['tankhead', 6], ['turret', 7], ['minelayer', 8]],
         barrels: 4, captain: 'cap_gunner', boss: 'b_walker' },
-      { id: 'dead', name: 'Deadtown', blurb: 'A ruined city where the dead do not stay down. Hordes incoming.', floor: '#3a3a3c', floor2: '#242426', glow: '#c8d040',
-        pool: [['zombie', 0, ['bomber', 0], ['hexer', 5], ['warden', 7]], ['runner', 0], ['bloater', 1], ['grunt', 2], ['shotgunner', 3], ['blinker', 4], ['medic', 5], ['burrower', 6], ['rocketeer', 7], ['heavy', 8]],
+      { id: 'dead', heat: 1.2, name: 'Deadtown', blurb: 'A ruined city where the dead do not stay down. Hordes incoming.', floor: '#3a3a3c', floor2: '#242426', glow: '#c8d040',
+        pool: [['zombie', 0], ['bomber', 0], ['hexer', 5], ['warden', 7], ['runner', 0], ['bloater', 1], ['grunt', 2], ['shotgunner', 3], ['blinker', 4], ['medic', 5], ['burrower', 6], ['rocketeer', 7], ['heavy', 8]],
         barrels: 5, captain: 'cap_zombie', boss: 'b_colossus' },
-      { id: 'frost', name: 'Frostbyte', blurb: 'Frozen mining moon. Abandoned rigs, and the drones like the cold.', floor: '#687b8a', floor2: '#34414d', glow: '#8fd3ff',
-        pool: [['runner', 0, ['tripod', 3], ['warden', 6], ['mortar', 8]], ['grunt', 0], ['shell', 0], ['drone', 1], ['sniper', 2], ['shield', 3], ['blade', 4], ['nest', 5], ['turret', 6], ['blinker', 7], ['tankhead', 8]],
+      { id: 'frost', heat: 0.85, name: 'Frostbyte', blurb: 'Frozen mining moon. Abandoned rigs, and the drones like the cold.', floor: '#687b8a', floor2: '#34414d', glow: '#8fd3ff',
+        pool: [['runner', 0], ['tripod', 3], ['warden', 6], ['mortar', 8], ['grunt', 0], ['shell', 2], ['drone', 1], ['sniper', 2], ['shield', 3], ['blade', 4], ['nest', 7], ['turret', 6], ['blinker', 7], ['tankhead', 8]],
         barrels: 3, captain: 'cap_bulwark', boss: 'b_queen' },
-      { id: 'toxic', name: 'Toxic Bog', blurb: 'Acid swamp. Do not drink the water. Do not stand in it either.', floor: '#4a4a28', floor2: '#2a2a1a', glow: '#9aff30',
-        pool: [['zombie', 0, ['hexer', 1], ['bomber', 4], ['warden', 6]], ['bloater', 0], ['leaper', 0], ['spitter', 1], ['splitter', 2], ['medic', 3], ['gootank', 4], ['minelayer', 5], ['burrower', 6], ['shield', 7], ['rocketeer', 8]],
+      { id: 'toxic', heat: 1.05, name: 'Toxic Bog', blurb: 'Acid swamp. Do not drink the water. Do not stand in it either.', floor: '#4a4a28', floor2: '#2a2a1a', glow: '#9aff30',
+        pool: [['zombie', 0], ['hexer', 1], ['bomber', 4], ['warden', 6], ['bloater', 0], ['leaper', 0], ['spitter', 1], ['splitter', 2], ['medic', 3], ['gootank', 4], ['minelayer', 5], ['burrower', 6], ['shield', 7], ['rocketeer', 8]],
         barrels: 3, captain: 'cap_rocket', boss: 'b_hydra' },
-      { id: 'hive', name: 'Xenohive', blurb: 'The alien nest itself. Crystals, eggs and things that split.', floor: '#5a3a60', floor2: '#2a1830', glow: '#d060ff',
-        pool: [['runner', 0, ['hexer', 1], ['charger', 3], ['warden', 5], ['tripod', 7]], ['splitter', 0], ['leaper', 0], ['nest', 1], ['drone', 2], ['spitter', 3], ['blinker', 4], ['burrower', 5], ['shell', 6], ['gootank', 7], ['turret', 8], ['tankhead', 8]],
+      { id: 'hive', heat: 0.9, name: 'Xenohive', blurb: 'The alien nest itself. Crystals, eggs and things that split.', floor: '#5a3a60', floor2: '#2a1830', glow: '#d060ff',
+        pool: [['runner', 0], ['hexer', 2], ['charger', 3], ['warden', 6], ['tripod', 7], ['splitter', 0], ['leaper', 0], ['drone', 2], ['nest', 4], ['spitter', 3], ['blinker', 4], ['burrower', 5], ['shell', 6], ['gootank', 7], ['turret', 8], ['tankhead', 8]],
         barrels: 3, captain: 'cap_blinker', boss: 'b_tyrant' },
-      { id: 'ship', name: 'The Dorkship', blurb: 'The D.O.R.K. Legion flagship. Every trick they know, all at once.', floor: '#3f454d', floor2: '#1f2227', glow: '#ff3b5c',
-        pool: [['grunt', 0, ['bomber', 1], ['hexer', 2], ['tripod', 4], ['warden', 5], ['mortar', 6]], ['runner', 0], ['shotgunner', 0], ['sniper', 1], ['blade', 1], ['medic', 2], ['shield', 2], ['heavy', 3], ['turret', 3], ['blinker', 4], ['rocketeer', 5], ['tankhead', 6], ['minelayer', 6], ['drone', 7], ['kamikaze', 7]],
+      { id: 'ship', heat: 1.0, name: 'The Dorkship', blurb: 'The D.O.R.K. Legion flagship. Every trick they know, all at once.', floor: '#3f454d', floor2: '#1f2227', glow: '#ff3b5c',
+        pool: [['grunt', 0], ['bomber', 1], ['hexer', 2], ['tripod', 4], ['warden', 5], ['mortar', 6], ['runner', 0], ['shotgunner', 0], ['sniper', 1], ['blade', 1], ['medic', 2], ['shield', 2], ['heavy', 3], ['turret', 3], ['blinker', 4], ['rocketeer', 5], ['tankhead', 6], ['minelayer', 6], ['drone', 7], ['kamikaze', 7]],
         barrels: 4, captain: 'cap_blade', boss: 'b_dork' },
     ],
     maxRev: 10,
 
     // Difficulty: tier = planet*10 + sector + rev*revTiers. Wave size grows with planet/sector, gently with revolution.
-    difficulty: { hpPerTier: 0.022, dmgPerTier: 0.0064, speedPerTier: 0.0012, bossPerTier: 0.018, oreTier: 0.014, revTiers: 100,
-      budgetBase: 7, budgetPerTier: 0.25, budgetPerRev: 4, budgetPerWave: 2.4, spawnGap: 0.6 },
+    difficulty: { hpPerTier: 0.014, dmgPerTier: 0.005, speedPerTier: 0.0012, bossPerTier: 0.012, oreTier: 0.014, revTiers: 100,
+      budgetBase: 7, budgetPerTier: 0.2, budgetPerRev: 4, budgetPerWave: 2.4, spawnGap: 0.6 },
     endless: { budgetBase: 7, budgetPerWave: 2.9, tierPerWave: 1.1, bossEvery: 10, buxEvery: 5 },
     drops: { heal: 0.045, healAmt: 25, rage: 0.018, rageTime: 10, rageMul: 2, shield: 0.015, shieldTime: 12, shieldHp: 0.6, oreMagnet: 150, oreLife: 14 },
 
     // Refinery: ore → coins. Multiplier grows with waves cleared and perfect waves.
     refinery: { perWave: 0.05, perPerfect: 0.1, cap: 2, megaMul: 2, megaMinutes: 5 },
-    rewards: { firstClearBux: 2, allPerfectBux: 3, planetBux: 40, sponsorBux: 1, sponsorPerDay: 8, dailyBux: 15, levelBux: 5, endlessBux: 5, revOreMul: 0.25 },
+    rewards: { veteranRate: 20000, firstClearBux: 2, allPerfectBux: 3, planetBux: 40, sponsorBux: 1, sponsorPerDay: 8, dailyBux: 15, levelBux: 5, endlessBux: 5, revOreMul: 0.25 },
   };
   // Captains: elite, oversized versions of a soldier that fight with that soldier's tactics.
   const E = BB.config.enemies;
@@ -1038,7 +1039,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
     const waves = [];
     for (let w = 0; w < C.wavesPerMission; w++) {
       // Wave size grows with planet/sector and gently with revolution; revolutions mostly add toughness.
-      const budget = D.budgetBase + (tier - (rev || 0) * D.revTiers) * D.budgetPerTier + (rev || 0) * D.budgetPerRev + w * D.budgetPerWave;
+      const budget = (D.budgetBase + (tier - (rev || 0) * D.revTiers) * D.budgetPerTier + (rev || 0) * D.budgetPerRev + w * D.budgetPerWave) * (P.heat || 1); // heat: per-planet smoothing (test/curve.cjs)
       const last = w === C.wavesPerMission - 1;
       const bossType = last ? BB.sectorBoss(C, planet, mission) : null;
       const spawns = fillBudget(C, pool, bossType ? budget * 0.35 : budget, rng);
@@ -5865,7 +5866,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
           <div class="equip"><button class="btn small ${slot === 0 ? 'on' : 'ghost'}" data-act="equip" data-slot="0" data-id="${id}">A</button><button class="btn small ${slot === 1 ? 'on' : 'ghost'}" data-act="equip" data-slot="1" data-id="${id}">B</button></div>`;
       }
       return `<div class="card ${owned ? 'owned' : ''} ${d.cur === 'bux' ? 'premium' : ''} ${id === 'bear' ? 'ultimate' : ''} ${locked ? 'is-locked' : ''}">
-        <div class="chead"><div><b class="cname">${d.name}</b><span class="cls">${d.cls}</span></div><div class="power"><span>POWER</span><b>${fmt(dps)}</b></div></div>
+        <div class="chead"><div><b class="cname">${d.name}</b><span class="cls">${d.cls}</span></div><div class="power"><span>POWER</span><b>${fmt(dps)}</b><em>max ${fmt(gunDps(id, BB.maxLvl(C, d)) * (1 + BB.MASTERY[rank]))}</em></div></div>
         <p class="blurb">${d.blurb}</p>
         ${s.range ? statBar('Range', s.range, 900, fmt(s.range)) : ''}
         ${fireRateBar(s)}
@@ -5913,6 +5914,8 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         <div class="card premium"><div class="chead"><b class="cname">Bro Buck Exchange</b></div>
           <p class="blurb">Trade Bro Bucks for a stack of coins. Not a great deal, but it's there.</p>
           <div class="cact"><button class="btn buy" data-act="exchange" ${save.bux >= 10 ? '' : 'disabled'}>10 B$ → ${coin(1500)}</button></div></div>
+          <div class="card owned ${level() >= C.xp.cap ? '' : 'is-locked'}"><div class="chead"><div><b class="cname">Veteran Exchange</b><span class="cls">Level ${C.xp.cap}</span></div></div><p class="blurb">For maxed-out bros sitting on a mountain of coins: trade them for Bro Bucks.</p>
+          <div class="cact"><button class="btn buy" data-act="vet" ${level() >= C.xp.cap && save.coins >= C.rewards.veteranRate ? '' : 'disabled'}>${coin(C.rewards.veteranRate)} → 1 B$</button><button class="btn buy" data-act="vet" data-n="10" ${level() >= C.xp.cap && save.coins >= C.rewards.veteranRate * 10 ? '' : 'disabled'}>${coin(C.rewards.veteranRate * 10)} → 10 B$</button></div>${level() >= C.xp.cap ? '' : `<div class="lockover"><b>LV ${C.xp.cap}</b><span>Reach max level to unlock</span></div>`}</div>
         <div class="card"><div class="chead"><b class="cname">Daily Bonus</b></div><p class="blurb">Come back every day for +${C.rewards.dailyBux} Bro Bucks. Clearing missions, gold stars, planets and endless milestones pay Bro Bucks too.</p></div>`;
     }
 
@@ -6167,6 +6170,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
         if (save.coins < d.price * n || save.items[id] + n > C.carry) { audio.play('nope'); return; }
         save.coins -= d.price * n; save.items[id] += n; persist(); audio.play('buy'); rerender();
       },
+      vet(el) { const n = +(el.dataset.n || 1), cost = C.rewards.veteranRate * n; if (level() < C.xp.cap || save.coins < cost) return; save.coins -= cost; save.bux += n; persist(); audio.play('buy'); toast(`+${buxWord(n)}`); rerender(); },
       exchange() { if (save.bux < 10) return; save.bux -= 10; save.coins += 1500; persist(); audio.play('buy'); rerender(); },
       sponsor() { if (sponsorLeft()) startSponsor('bux'); },
       'ad-claim'() {
@@ -6214,7 +6218,7 @@ button.ref-chip.ready { cursor: pointer; border-color: var(--gold); box-shadow: 
       if (!el || el.disabled) return;
       audio.unlock();
       const act = el.dataset.act;
-      if (!['buy', 'upgrade', 'ad-claim', 'collect', 'smelt', 'buyitem', 'claim', 'exchange'].includes(act)) audio.play('click');
+      if (!['buy', 'upgrade', 'ad-claim', 'collect', 'smelt', 'buyitem', 'claim', 'exchange', 'vet'].includes(act)) audio.play('click');
       ACTS[act] && ACTS[act](el);
     });
     $('screen').addEventListener('input', (e) => devInput(e));
